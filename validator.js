@@ -121,9 +121,10 @@ io.on('connection', (socket) => {
   });
 
   socket.on('generate-qr-code-request', (data) => {
-    const qrCode = qrCodeGenerator.generateQrCode(data);
-    messager.notify('generate-qr-code-reply', JSON.stringify({
-      transaction: 'transaction',
-    }));
+    qrCodeGenerator.generateQrCodeAsync(data).then((url) => {
+      messager.notify('generate-qr-code-reply', url);
+    }).catch((err) => {
+      console.log(err);
+    });
   });
 });

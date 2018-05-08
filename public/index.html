@@ -80,10 +80,10 @@
                 </header>
                 <div class="row">
                     <div class="12u$">
-                        <img src="./images/avatar.jpg" />
+                        <img id="qr-code-image" src="./images/avatar.jpg" />
                     </div>
                 </div>
-                <form onsubmit="generateQRCode()">
+                <form id="qr-code-form">
                     <div class="row">
                         <input id="qr-code-public" class="qr-code-input" type="text" name="transaction-public-key" placeholder="Public Key" />
                         <input id="qr-code-private" class="qr-code-input" type="password" name="transaction-amoun" placeholder="Private Key" />
@@ -248,6 +248,10 @@
                 e.preventDefault();
                 postMessage();
             });
+            $('#qr-code-form').on('submit', function(e) {
+                e.preventDefault();
+                generateQRCode();
+            });
         });
         console.log("Trying to connect");
         const socket = io.connect();
@@ -347,11 +351,9 @@
             privateKey: document.querySelector('#qr-code-private').value,
           }));
           socket.on('generate-qr-code-reply', (data) => {
-
+            document.querySelector('#qr-code-image').src = data;
           });
         }
-
-        function get
     </script>
 </body>
 </html>
