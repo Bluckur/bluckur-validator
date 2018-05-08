@@ -1,0 +1,15 @@
+{
+  "name": "validator-mongodb",
+  "version": "1.0.0",
+  "description": "mongodb module for the validator",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node validator-database.js"
+  },
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "mongoose": "^5.0.17"
+  }
+}
