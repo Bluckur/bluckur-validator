@@ -1,7 +1,7 @@
 // Hier moet server en client zooi in gebeuren (het ontvangen en verzenden dus) eventueel kan hier ook de peer/sessie lijst bijgehouden worden.
-const app = require('express')();
-const http = require('http').Server(app);
-const io = require('socket.io')(http);
+
+const ioServer = require('socket.io');
+const ioClient = require('socket.io-client'),
 
 /**
  * Default message
@@ -9,21 +9,46 @@ const io = require('socket.io')(http);
 class Peer {
     /**
      *
-     * @param {{}} example
+     * @param  {int} port
+     * 
+     * 
      */
-    constructor() {
-        io.on('connection', function(socket) {
-            console.log('A user connected');
 
-            //Send a message after a timeout of 4seconds
-            setTimeout(function() {
-                socket.send('Sent a message 4seconds after connection!');
-            }, 4000);
+    constructor(port) {
+        this.client = ioClient.connect('http://localhost:8000');
+        this.sequenceNumberByClient = new Map();
+        this.server = io.listen(port);
 
-            socket.on('disconnect', function() {
-                console.log('A user disconnected');
+        this.handleServer(port);
+        this.handleClient();
+    }
+
+    handleServer(port) {
+  
+        // event fired every time a new client connects:
+        this.server.on('connection', (socket) => {
+            console.info(`Client connected [id=${socket.id}]`);
+            // initialize this client's sequence number
+            this.sequenceNumberByClient.set(socket, 1);
+
+            // when socket disconnects, remove it from the list:
+            socket.on('disconnect', () => {
+                this.sequenceNumberByClient.delete(socket);
+                console.info(`Client gone [id=${socket.id}]`);
             });
         });
+
+        // sends each client its current sequence number
+        setInterval(() => {
+            for (const [ client, sequenceNumber ] of sequenceNumberByClient.entries()) {
+                client.emit('seq-num', sequenceNumber);
+                sequenceNumberByClient.set(client, sequenceNumber + 1);
+            }
+        }, 1000);
+    }
+
+    handleClient() {
+        this.client.on('seq-num', (msg) => console.info(msg));
     }
 }
 
