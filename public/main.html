@@ -1,0 +1,157 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+
+<head>
+    <title>validator.js</title>
+    <link rel="stylesheet" type="text/css" href="css/main.css">
+    <script type="text/javascript" src="/socket.io/socket.io.js"></script>
+</head>
+
+<body>
+    <div id="status-container">
+        <label>Server Status: </label><span id="server-status">Online</span>
+    </div>
+    <div id="validator-status-container">
+        <label>Node Id: </label><span id="node-id">-</span>
+        <label>Host: </label><span id="node-host">-</span>
+        <label>Port: </label><span id="node-port">-</span>
+        <label>Is Backup: </label><span id="node-isbackup">-</span>
+        <label>Status: </label><span id="node-status">-</span>
+    </div>
+    <hr>
+    <form id="init-node-form">
+        <h2>Initialize Node</h2>
+        <p id="container-node-data-isbackup">
+            <label>Is Backup:</label>
+            <input type="checkbox" id="node-data-isbackup" onclick='onChange();'>
+        </p>
+        <p id="container-node-data-host">
+            <label>Node Host:</label><br>
+            <input type="text" id="node-data-host" autofocus>
+        </p>
+        <p id="container-node-data-backup1_host">
+            <label>1st Backup Host:</label><br>
+            <input type="text" id="node-data-backup1_host">
+        </p>
+        <p id="container-node-data-backup2_host">
+            <label>2nd Backup Host:</label><br>
+            <input type="text" id="node-data-backup2_host">
+        </p>
+        <p id="container-node-data-other_host">
+            <label>Other Backup Host:</label><br>
+            <input type="text" id="node-data-other_host">
+        </p>
+        <p class="submit">
+            <input id="init-node-submit" type="submit" value="Start Validator" />
+        </p>
+    </form>
+    <form id="message-broadcast-form">
+        <h2>Broadcast Transaction</h2>
+        <p>
+            <label>Transaction:</label><br>
+            <input type="text" id="message">
+        </p>
+        <p class="submit">
+            <input id="broadcast-message-submit" , type="submit" value="Broadcast" />
+        </p>
+    </form>
+    <br>
+    <div id="logging-container">
+        <h2>Logging</h2>
+        <div id="logging-logs"></div>
+    </div>
+
+    <script type="text/javascript">
+        document.getElementById('container-node-data-host').style.display = 'none';
+        document.getElementById('container-node-data-other_host').style.display = 'none';
+        document.getElementById('message-broadcast-form').style.display = 'none'
+        document.getElementById('logging-container').style.display = 'none'
+
+        const onChange = () => {
+            if (document.querySelector('#node-data-isbackup').checked) {
+                document.getElementById('container-node-data-host').style.display = 'inherit';
+                document.getElementById('container-node-data-backup1_host').style.display = 'none';
+                document.getElementById('container-node-data-backup2_host').style.display = 'none';
+                document.getElementById('container-node-data-other_host').style.display = 'inherit';
+            } else {
+                document.getElementById('container-node-data-host').style.display = 'none';
+                document.getElementById('container-node-data-backup1_host').style.display = 'inherit';
+                document.getElementById('container-node-data-backup2_host').style.display = 'inherit';
+                document.getElementById('container-node-data-other_host').style.display = 'none';
+            }
+        }
+
+        const socket = io.connect();
+        socket.on('connect', () => {
+
+            socket.on('disconnect', () => {
+                document.getElementById('server-status').innerText = 'Offline';
+                document.getElementById('node-id').innerText = '-';
+                document.getElementById('node-port').innerText = '-';
+                document.getElementById('node-host').innerText = '-';
+                document.getElementById('node-isbackup').innerText = '-';
+                document.getElementById('node-status').innerText = '-';
+            });
+
+            socket.on('node-initialized', (data) => {
+                data = JSON.parse(data.toString('utf8'));
+                document.getElementById('node-id').innerText = data.id;
+                document.getElementById('node-host').innerText = data.host;
+                document.getElementById('node-port').innerText = data.port;
+                document.getElementById('node-isbackup').innerText = data.isBackup;
+                document.getElementById('node-status').innerText = 'Disconnected';
+            });
+
+            socket.on('logging', (data) => {
+                const currentLogs = document.getElementById('logging-logs').innerHTML;
+                document.getElementById('logging-logs').innerHTML = data.toString('utf8') + '<br>' + currentLogs;
+            })
+
+            socket.on('node-connected', (data) => {
+                document.getElementById('node-status').innerText = 'Connected';
+            });
+
+            socket.on('node-disconnected', (data) => {
+                document.getElementById('node-status').innerText = 'Disconnected';
+            });
+
+            document.getElementById('server-status').innerText = 'Online';
+            const initNodeForm = document.querySelector('#init-node-form');
+            initNodeForm.addEventListener('submit', submitNodeData);
+            const broadcastMessageForm = document.querySelector('#message-broadcast-form');
+            broadcastMessageForm.addEventListener('submit', broadcastMessage);
+
+            function submitNodeData(event) {
+                event.preventDefault();
+                const isBackup = document.querySelector('#node-data-isbackup').checked;
+                const host = document.querySelector('#node-data-host').value;
+                const backup1_host = document.querySelector('#node-data-backup1_host').value;
+                const backup2_host = document.querySelector('#node-data-backup2_host').value;
+                const other_host = document.querySelector('#node-data-other_host').value;
+
+                socket.emit('node-data', JSON.stringify({
+                    isBackup: isBackup,
+                    host: host,
+                    backup1_host: backup1_host,
+                    backup2_host: backup2_host,
+                    other_host: other_host,
+                }));
+
+                // Change elements on webpage
+                document.getElementById('init-node-form').style.display = 'none';
+                document.getElementById('message-broadcast-form').style.display = 'initial'
+                document.getElementById('logging-container').style.display = 'initial'
+            }
+
+            function broadcastMessage(event) {
+                event.preventDefault();
+                const message = document.querySelector('#message').value;
+                socket.emit('broadcast-message', JSON.stringify({
+                    message: message
+                }));
+            }
+        });
+    </script>
+</body>
+
+</html>

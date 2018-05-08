@@ -1,0 +1,7 @@
+Step 1: Generate Mnemoni
+Step 2: Generate Keypair with Mnemonic
+Step 3: Input a message
+Step 4: Sign message
+Step 5: Verify signature
+Step 6: Generate Wallet Address
+Step 7: Write to file
