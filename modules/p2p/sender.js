@@ -1,0 +1,1 @@
+//Handle all messages to send, regardless of them being form the 'server' or 'client'
