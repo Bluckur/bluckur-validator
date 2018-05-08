@@ -1,3 +1,7 @@
+.qr-code-input {
+  margin: 2em !mportant;
+}
+
 input, textarea {
     padding: 9px;
     border: solid 1px #E5E5E5;
