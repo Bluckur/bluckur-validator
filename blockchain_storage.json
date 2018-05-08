@@ -1,0 +1,39 @@
+{
+  "blocks": [
+    {
+      "transactions": [],
+      "header": {
+        "coinbase": "c4382b76386e73a8a37aff842fbfc1a02fd2b1f2eda74805911ac0505a69062d",
+        "parentHash": "0",
+        "version": "v1.1",
+        "timestamp": 1524562482975,
+        "blockHash": "2495f4659bd5498ddb3955fcf6853fab65d0b9fbb26844d41752173652fcf639"
+      },
+      "BLOCK_REWARD": 50
+    },
+    {
+      "transactions": [],
+      "header": {
+        "coinbase": "c4382b76386e73a8a37aff842fbfc1a02fd2b1f2eda74805911ac0505a69062d",
+        "parentHash": "2495f4659bd5498ddb3955fcf6853fab65d0b9fbb26844d41752173652fcf639",
+        "version": "v1.1",
+        "timestamp": 1524562483017,
+        "blockHash": "42564517f22deda4e85cc62c070bd8d9a7ed56f74acc7d029272335bf6538ef9"
+      },
+      "BLOCK_REWARD": 50
+    }
+  ],
+  "coinbase": "c4382b76386e73a8a37aff842fbfc1a02fd2b1f2eda74805911ac0505a69062d",
+  "version": "v1.1",
+  "currentBlock": {
+    "transactions": [],
+    "header": {
+      "coinbase": "c4382b76386e73a8a37aff842fbfc1a02fd2b1f2eda74805911ac0505a69062d",
+      "parentHash": "0",
+      "version": "v1.1",
+      "timestamp": 1524562483017,
+      "blockHash": null
+    },
+    "BLOCK_REWARD": 50
+  }
+}
