@@ -9,7 +9,7 @@ function Queue(length) {
   Queue.prototype.add = function(record) {
     
     this.data.unshift(record);
-    if (this.data.size > this.max)
+    if (this.data.length > this.max)
     {
         this.remove();
     }
@@ -40,7 +40,10 @@ function Queue(length) {
   q.add(1);
   q.add(2);
   q.add(3);
-  q.remove();
+  q.add(4);
+  q.add(5);
+  q.add(6);
+  q.add(7);
   console.log(q);
   console.log(`Size of the Queue: ${q.size()}`)
   q.flip();
