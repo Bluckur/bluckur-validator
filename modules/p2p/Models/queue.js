@@ -1,50 +1,38 @@
 // Create a queue-like thing for Java
 
 
-function Queue(length) {
-    this.max = length;
-    this.data = [];
-  }
-  
-  Queue.prototype.add = function(record) {
-    
-    this.data.unshift(record);
-    if (this.data.length > this.max)
-    {
-        this.remove();
-    }
-  }
-  
-  Queue.prototype.remove = function() {
-    this.data.pop();
-  }
-  
-  Queue.prototype.first = function() {
-    return this.data[0];
-  }
-  
-  Queue.prototype.last = function() {
-    return this.data[this.data.length - 1];
-  }
-  
-  Queue.prototype.size = function() {
-    return this.data.length;
-  }
+class Queue {
 
-  Queue.prototype.flip = function() {
-      this.data.reverse();
-  }
-  
-  // Create a Queue
-  const q = new Queue(5);
-  q.add(1);
-  q.add(2);
-  q.add(3);
-  q.add(4);
-  q.add(5);
-  q.add(6);
-  q.add(7);
-  console.log(q);
-  console.log(`Size of the Queue: ${q.size()}`)
-  q.flip();
-  console.log(q);
+    constructor(length) {
+        this.max = length;
+        this.data = [];
+    }
+
+    add(record) {
+
+        this.data.unshift(record);
+        if (this.data.length > this.max) {
+            this.remove();
+        }
+    }
+
+    remove() {
+        this.data.pop();
+    }
+
+    first() {
+        return this.data[0];
+    }
+
+    last() {
+        return this.data[this.data.length - 1];
+    }
+
+    size() {
+        return this.data.length;
+    }
+
+    flip() {
+        this.data.reverse();
+    }
+}
