@@ -1,15 +1,12 @@
 // This class mimics a FIFO collection in javascript
 
-
 class Queue {
-
     constructor(length) {
         this.max = length;
         this.data = [];
     }
 
     add(record) {
-
         this.data.unshift(record);
         if (this.data.length > this.max) {
             this.remove();
@@ -21,11 +18,17 @@ class Queue {
     }
 
     first() {
-        return this.data[0];
+        if (this.data.length > 0) {
+            return this.data[0];
+        }
+        return undefined;
     }
 
     last() {
-        return this.data[this.data.length - 1];
+        if (this.data.length > 0) {
+            return this.data[this.data.length - 1];
+        }
+        return undefined;
     }
 
     size() {

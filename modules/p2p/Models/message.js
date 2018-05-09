@@ -1,9 +1,9 @@
 // The dynamic message which will be send over the network
 
 class Message {
-    constructor(content_, sender_, type_){
-        this.content = content_;
-        this.sender = sender_;
-        this.type = type_;
+    constructor(content, sender, type){
+        this.content = content;
+        this.sender = sender;
+        this.type = type;
     }
 }
