@@ -1,4 +1,4 @@
-// Create a queue-like thing for Java
+// This class mimics a FIFO collection in javascript
 
 
 class Queue {
