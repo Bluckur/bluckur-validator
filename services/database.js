@@ -8,16 +8,16 @@ let db;
 
 class Database {
     constructor() {
-        open();
+        this.open();
     }
 
-    static open() {
+    open() {
         this.db = level(databasePath, {createIfMissing: false}, function(err, db) {
             if (err && verbose) console.log(err);
         });
     }
 
-    static close() {
+    close() {
         this.db.close(function(err) {
             if (err && verbose) console.log(err);
         });
@@ -28,8 +28,8 @@ class Database {
      * @param {*} key
      * @param {*} value
      */
-    static put(key, value) {
-        db.put(key, value, function(err) {
+    put(key, value) {
+        this.db.put(key, value, function(err) {
             if (err && verbose) console.log('Unable to put ' + value + 'into the database.', err); // some kind of I/O error
         });
     }
@@ -39,9 +39,9 @@ class Database {
      * @param {*} key
      * @return {*} value
      */
-    static get(key) {
+    get(key) {
         return new Promise((resolve, reject) => {
-            db.get(key, function(err, value) {
+            this.db.get(key, function(err, value) {
                 if (err && verbose) return console.log(key + ' has no matches');
                 if (value) resolve(value);
             });
@@ -54,8 +54,8 @@ class Database {
      *
      * @param {*} key
      */
-    static delete(key) {
-        db.del(key, function(err) {
+    delete(key) {
+        this.db.del(key, function(err) {
             if (err && verbose) console.log(err);
         });
     }
@@ -64,8 +64,8 @@ class Database {
      *
      * @param {*} ops {type: 'put/del', key:'key', value:'value'}
      */
-    static batch(ops) {
-        db.batch(ops, function(err) {
+    batch(ops) {
+        this.db.batch(ops, function(err) {
             if (err && verbose) console.log(err);
         });
     }
