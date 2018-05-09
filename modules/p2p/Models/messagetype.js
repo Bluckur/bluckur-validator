@@ -1,0 +1,1 @@
+// This will hold all the constants for all the possible messagetypes
