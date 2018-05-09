@@ -45,6 +45,7 @@
 							-->
                 <ul>
                     <li><a href="#top" id="top-link" class="skel-layers-ignoreHref"><span class="icon fa-home">Home</span></a></li>
+                    <li><a href="#qr-code" id="qr-code-link" class="skel-layers-ignoreHref"><span class="icon fa-envelope">QR Code</span></a></li>
                     <li><a href="#wallet" id="portfolio-link" class="skel-layers-ignoreHref"><span class="icon fa-th">Wallet</span></a></li>
                     <li><a href="#transaction" id="transaction-link" class="skel-layers-ignoreHref"><span class="icon fa-envelope">Transaction</span></a></li>
                     <li><a href="#chain" id="chain-link" class="skel-layers-ignoreHref"><span class="icon fa-link">Chain</span></a></li>
@@ -52,12 +53,9 @@
                     <li><a href="#logs" id="logs-link" class="skel-layers-ignoreHref"><span class="icon fa-terminal">Logs</span></a></li>
                     <li><a href="#keygen" id="keygen-link" class="skel-layers-ignoreHref"><span class="icon fa-key">Keygen</span></a></li>
                     <li><a href="#chat" id="chat-link" class="skel-layers-ignoreHref"><span class="icon fa-envelope">Chat</span></a></li>
-
-
                 </ul>
             </nav>
         </div>
-
         <div class="bottom">
             <!-- Social Icons -->
             <ul class="icons">
@@ -66,12 +64,8 @@
                 <li><a href="https://github.com/OrdinaBlockchain/blockchain-validator" class="icon fa-github"><span class="label">Github</span></a></li>
             </ul>
         </div>
-
     </div>
-
-    <!-- Main -->
     <div id="main">
-        <!-- Intro -->
         <section id="top" class="one dark cover">
             <div class="container">
                 <header>
@@ -79,11 +73,29 @@
                 </header>
             </div>
         </section>
-
-        <!-- Portfolio -->
+        <section id="qr-code" class="two">
+            <div class="container">
+                <header>
+                    <h2>QR Code</h2>
+                </header>
+                <div class="row">
+                    <div class="12u$">
+                        <img id="qr-code-image" src="./images/avatar.jpg" />
+                    </div>
+                </div>
+                <form id="qr-code-form">
+                    <div class="row">
+                        <input id="qr-code-public" class="qr-code-input" type="text" name="transaction-public-key" placeholder="Public Key" />
+                        <input id="qr-code-private" class="qr-code-input" type="password" name="transaction-amoun" placeholder="Private Key" />
+                        <div class="12u$">
+                            <input type="submit" value="Generate QR Code" />
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </section>
         <section id="wallet" class="two">
             <div class="container">
-
                 <header>
                     <h2>Wallet</h2>
                 </header>
@@ -101,11 +113,8 @@
                 </form>
             </div>
         </section>
-
-        <!-- About Me -->
         <section id="transaction" class="three">
             <div class="container">
-
                 <header>
                     <h2>Transaction</h2>
                 </header>
@@ -121,8 +130,6 @@
                 </form>
             </div>
         </section>
-
-        <!-- Contact -->
         <section id="chain" class="four">
             <div class="container">
 
@@ -241,6 +248,10 @@
                 e.preventDefault();
                 postMessage();
             });
+            $('#qr-code-form').on('submit', function(e) {
+                e.preventDefault();
+                generateQRCode();
+            });
         });
         console.log("Trying to connect");
         const socket = io.connect();
@@ -280,13 +291,6 @@
                 var message = JSON.parse(data).message;
                 receiveMessage(sender, message);
             });
-
-
-
-            // const initNodeForm = document.querySelector('#init-node-form');
-            // initNodeForm.addEventListener('submit', submitNodeData);
-            // const broadcastMessageForm = document.querySelector('#message-broadcast-form');
-            // broadcastMessageForm.addEventListener('submit', broadcastMessage);
 
             function submitNodeData(event) {
                 event.preventDefault();
@@ -340,8 +344,16 @@
         function generateKeypair() {
             socket.emit('generate-keypair');
         }
+
+        function generateQRCode() {
+          socket.emit('generate-qr-code-request', JSON.stringify({
+            publicKey: document.querySelector('#qr-code-public').value,
+            privateKey: document.querySelector('#qr-code-private').value,
+          }));
+          socket.on('generate-qr-code-reply', (data) => {
+            document.querySelector('#qr-code-image').src = data;
+          });
+        }
     </script>
-
 </body>
-
 </html>
