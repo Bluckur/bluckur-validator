@@ -1,0 +1,359 @@
+<!DOCTYPE HTML>
+<!--
+	Prologue by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+
+<head>
+    <title>Ordina-Blockchain-Validator</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!--[if lte IE 8]><script src="assets/js/ie/html5shiv.js"></script><![endif]-->
+    <link rel="stylesheet" href="assets/css/main.css" />
+    <!--[if lte IE 8]><link rel="stylesheet" href="assets/css/ie8.css" /><![endif]-->
+    <!--[if lte IE 9]><link rel="stylesheet" href="assets/css/ie9.css" /><![endif]-->
+</head>
+
+<body>
+
+    <!-- Header -->
+    <div id="header">
+
+        <div class="top">
+
+            <!-- Logo -->
+            <div id="logo">
+                <h1 id="node-id"></h1>
+                <p id="node-status"></p>
+            </div>
+            <!-- Nav -->
+            <nav id="nav">
+                <!--
+
+								Prologue's nav expects links in one of two formats:
+
+								1. Hash link (scrolls to a different section within the page)
+
+								   <li><a href="#foobar" id="foobar-link" class="icon fa-whatever-icon-you-want skel-layers-ignoreHref"><span class="label">Foobar</span></a></li>
+
+								2. Standard link (sends the user to another page/site)
+
+								   <li><a href="http://foobar.tld" id="foobar-link" class="icon fa-whatever-icon-you-want"><span class="label">Foobar</span></a></li>
+
+							-->
+                <ul>
+                    <li><a href="#top" id="top-link" class="skel-layers-ignoreHref"><span class="icon fa-home">Home</span></a></li>
+                    <li><a href="#qr-code" id="qr-code-link" class="skel-layers-ignoreHref"><span class="icon fa-envelope">QR Code</span></a></li>
+                    <li><a href="#wallet" id="portfolio-link" class="skel-layers-ignoreHref"><span class="icon fa-th">Wallet</span></a></li>
+                    <li><a href="#transaction" id="transaction-link" class="skel-layers-ignoreHref"><span class="icon fa-envelope">Transaction</span></a></li>
+                    <li><a href="#chain" id="chain-link" class="skel-layers-ignoreHref"><span class="icon fa-link">Chain</span></a></li>
+                    <li><a href="#sign-transaction" id="sign-link" class="skel-layers-ignoreHref"><span class="icon fa-key">Sign Transaction</span></a></li>
+                    <li><a href="#logs" id="logs-link" class="skel-layers-ignoreHref"><span class="icon fa-terminal">Logs</span></a></li>
+                    <li><a href="#keygen" id="keygen-link" class="skel-layers-ignoreHref"><span class="icon fa-key">Keygen</span></a></li>
+                    <li><a href="#chat" id="chat-link" class="skel-layers-ignoreHref"><span class="icon fa-envelope">Chat</span></a></li>
+                </ul>
+            </nav>
+        </div>
+        <div class="bottom">
+            <!-- Social Icons -->
+            <ul class="icons">
+                <li><a href="#" class="icon fa-twitter"><span class="label">Portal</span></a></li>
+                <li><a href="#" class="icon fa-facebook"><span class="label">Ordina</span></a></li>
+                <li><a href="https://github.com/OrdinaBlockchain/blockchain-validator" class="icon fa-github"><span class="label">Github</span></a></li>
+            </ul>
+        </div>
+    </div>
+    <div id="main">
+        <section id="top" class="one dark cover">
+            <div class="container">
+                <header>
+                    <h2 class="alt">Thanks for using the <strong>Ordina Blockchain</strong></h2>
+                </header>
+            </div>
+        </section>
+        <section id="qr-code" class="two">
+            <div class="container">
+                <header>
+                    <h2>QR Code</h2>
+                </header>
+                <div class="row">
+                    <div class="12u$">
+                        <img id="qr-code-image" src="./images/avatar.jpg" />
+                    </div>
+                </div>
+                <form id="qr-code-form">
+                    <div class="row">
+                        <input id="qr-code-public" class="qr-code-input" type="text" name="transaction-public-key" placeholder="Public Key" />
+                        <input id="qr-code-private" class="qr-code-input" type="password" name="transaction-amoun" placeholder="Private Key" />
+                        <div class="12u$">
+                            <input type="submit" value="Generate QR Code" />
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </section>
+        <section id="wallet" class="two">
+            <div class="container">
+                <header>
+                    <h2>Wallet</h2>
+                </header>
+
+                <p>Here you can configure the wallet for which this validator will vouch</p>
+                <form method="post" action="#">
+                    <div class="row">
+                        <div class="12u$">
+                            <textarea name="public-key" placeholder="Public-Key"></textarea>
+                        </div>
+                        <div class="12u$">
+                            <input type="submit" value="Set Public-Key" />
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </section>
+        <section id="transaction" class="three">
+            <div class="container">
+                <header>
+                    <h2>Transaction</h2>
+                </header>
+                <p>Set the public key and amount for the transaction you wish to make</p>
+                <form method="post" action="#">
+                    <div class="row">
+                        <div class="6u 12u$(mobile)"><input type="text" name="transaction-public-key" placeholder="Public-Key" /></div>
+                        <div class="6u$ 12u$(mobile)"><input type="text" name="transaction-amoun" placeholder="amount" /></div>
+                        <div class="12u$">
+                            <input type="submit" value="Generate transaction" />
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </section>
+        <section id="chain" class="four">
+            <div class="container">
+
+                <header>
+                    <h2>Chain</h2>
+                </header>
+
+                <p>Here you can gain insight in the Ordina Blockchain</p>
+
+                <form method="post" action="#">
+                    <div class="row">
+                        <div class="6u 12u$(mobile)"><input type="text" name="name" placeholder="Name" /></div>
+                        <div class="6u$ 12u$(mobile)"><input type="text" name="email" placeholder="Email" /></div>
+                        <div class="12u$">
+                            <textarea name="message" placeholder="Message"></textarea>
+                        </div>
+                        <div class="12u$">
+                            <input type="submit" value="Send Message" />
+                        </div>
+                    </div>
+                </form>
+
+            </div>
+        </section>
+
+        <section id="sign-transaction" class="two">
+            <div class="container">
+
+                <header>
+                    <h2>Sign-Transaction</h2>
+                </header>
+                <p>Set the public key and amount for the transaction you wish to make</p>
+                <form method="post" action="#">
+                    <div class="row">
+                        <div class="12u$">
+                            <textarea name="transaction-data" placeholder="Transaction-data"></textarea>
+                        </div>
+                        <div class="6u 12u$(mobile)"><input type="password" name="private-key" placeholder="Private-Key" /></div>
+                        <div class="12u$">
+                            <input type="submit" value="Sign Transaction" />
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </section>
+        <section id="keygen" class="three">
+            <div class="container">
+                <header>
+                    <h2>Keygen</h2>
+                </header>
+                <button id="generatekeypair" onclick="generateKeypair()">Generate a keypair</button>
+                <div class="row">
+                    <div class="12u$">
+                        <textarea name="keypair" id="keypair" class="form textarea"></textarea>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section id="chat" class="two">
+            <div class="container">
+                <header>
+                    <h2>Chat</h2>
+                </header>
+                <form name="chatform" id="chatform">
+                    <div class="row">
+                        <div class="12u$">
+                            <textarea name="chattotal" id="chattotal" placeholder="No messages yet" readonly></textarea>
+                        </div>
+                        <div class="12u"><input type="text" name="chatmessage" id="chatmessage" placeholder="Message...." /></div>
+                        <div class="12u$">
+                            <input type="submit" value="Post Message" />
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </section>
+        <section id="logs" class="three">
+            <div class="container">
+
+                <header>
+                    <h2>Logs</h2>
+                </header>
+                <p>Access the logs below</p>
+                <div class="row">
+                    <div class="12u$">
+                        <textarea name="logs" id="logs" class="form textarea"></textarea>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Footer -->
+    <div id="footer">
+
+        <!-- Copyright -->
+        <ul class="copyright">
+            <li>&copy; Untitled. All rights reserved.</li>
+            <li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
+        </ul>
+
+    </div>
+
+    <!-- Scripts -->
+    <script src="assets/js/jquery.min.js"></script>
+    <script src="assets/js/jquery.scrolly.min.js"></script>
+    <script src="assets/js/jquery.scrollzer.min.js"></script>
+    <script src="assets/js/skel.min.js"></script>
+    <script src="assets/js/util.js"></script>
+    <!--[if lte IE 8]><script src="assets/js/ie/respond.min.js"></script><![endif]-->
+    <script src="assets/js/main.js"></script>
+    <script type="text/javascript" src="/socket.io/socket.io.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('#chatform').on('submit', function(e) {
+                e.preventDefault();
+                postMessage();
+            });
+            $('#qr-code-form').on('submit', function(e) {
+                e.preventDefault();
+                generateQRCode();
+            });
+        });
+        console.log("Trying to connect");
+        const socket = io.connect();
+        socket.on('connect', () => {
+            console.log("connected");
+            socket.on('disconnect', () => {
+                document.getElementById('node-id').innerText = '-';
+                document.getElementById('node-status').innerText = 'Disconnected';
+            });
+
+            socket.on('node-initialized', (data) => {
+                data = JSON.parse(data.toString('utf8'));
+                document.getElementById('node-id').innerText = data.id;
+                //document.getElementById('node-port').innerText = data.port;
+                //document.getElementById('node-isbackup').innerText = data.isBackup;
+                document.getElementById('node-status').innerText = 'Disconnected';
+            });
+
+            socket.on('logging', (data) => {
+                document.getElementById('logs').innerHTML += data.toString('utf8') + '<br>';
+            })
+
+            socket.on('node-connected', (data) => {
+                document.getElementById('node-status').innerText = 'Connected';
+            });
+
+            socket.on('node-disconnected', (data) => {
+                document.getElementById('node-status').innerText = 'Disconnected';
+            });
+
+            socket.on('keypair', (data) => {
+                document.getElementById('keypair').innerText = data.pubkey + ", " + data.privkey;
+            });
+
+            socket.on('chatmessage', (data) => {
+                var sender = JSON.parse(data).sender;
+                var message = JSON.parse(data).message;
+                receiveMessage(sender, message);
+            });
+
+            function submitNodeData(event) {
+                event.preventDefault();
+                const isBackup = document.querySelector('#node-data-isbackup').checked;
+                const host = document.querySelector('#node-data-host').value;
+                const port = document.querySelector('#node-data-port').value;
+                const backup1_port = document.querySelector('#node-data-backup1_port').value;
+                const backup1_host = document.querySelector('#node-data-backup1_host').value;
+                const backup2_port = document.querySelector('#node-data-backup2_port').value;
+                const backup2_host = document.querySelector('#node-data-backup2_host').value;
+
+                socket.emit('node-data', JSON.stringify({
+                    isBackup: isBackup,
+                    host: host,
+                    port: port,
+                    backup1_port: backup1_port,
+                    backup1_host: backup1_host,
+                    backup2_port: backup2_port,
+                    backup2_host: backup2_host
+                }));
+
+                // Change elements on webpage
+                document.getElementById('init-node-form').style.display = 'none';
+                document.getElementById('message-broadcast-form').style.display = 'initial'
+                document.getElementById('logging-container').style.display = 'initial'
+            }
+
+            function broadcastMessage(event) {
+                event.preventDefault();
+                const message = document.querySelector('#message').value;
+                socket.emit('broadcast-message', JSON.stringify({
+                    message: message
+                }));
+            }
+        });
+
+        function postMessage() {
+            if (document.querySelector('#chatmessage').value !== "") {
+                socket.emit('broadcast-chatmessage', JSON.stringify({
+                    message: document.querySelector('#chatmessage').value
+                }));
+                document.querySelector('#chattotal').value = "You: " + document.querySelector('#chatmessage').value + "\n" + document.querySelector('#chattotal').value;
+                document.querySelector('#chatmessage').value = "";
+            }
+        }
+
+        function receiveMessage(sender, message) {
+            document.querySelector('#chattotal').value = sender + ": " + message + "\n" + document.querySelector('#chattotal').value;
+        }
+
+        function generateKeypair() {
+            socket.emit('generate-keypair');
+        }
+
+        function generateQRCode() {
+          socket.emit('generate-qr-code-request', JSON.stringify({
+            publicKey: document.querySelector('#qr-code-public').value,
+            privateKey: document.querySelector('#qr-code-private').value,
+          }));
+          socket.on('generate-qr-code-reply', (data) => {
+            document.querySelector('#qr-code-image').src = data;
+          });
+        }
+    </script>
+</body>
+</html>
