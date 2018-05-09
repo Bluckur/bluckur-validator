@@ -1,10 +1,10 @@
-/**
- * [Transaction description]
- * @constructor
- */
-module.exports = function Transaction() {
-  this.recipient = null;
-  this.amount = null;
-  this.timestamp = null;
-  this.type = null;
-};
+const SchemaObject = require('schema-object');
+
+const Transaction = new SchemaObject({
+  recipient: String,
+  amount: Number,
+  timestamp: Date,
+  type: { type: String, default: 'default' },
+});
+
+module.exports = Transaction;

@@ -1,10 +1,9 @@
 const Transaction = require('./../transaction');
 
-module.exports = class CoinTransaction extends Transaction {
-  constructor() {
-    super();
-    this.type = 'coin';
-    this.sender = null;
-    this.signature = null;
-  }
-};
+const CoinTransaction = new Transaction.extend({ // eslint-disable-line new-cap
+  sender: String,
+  signature: String,
+  type: { type: String, default: 'coin' },
+});
+
+module.exports = CoinTransaction;
