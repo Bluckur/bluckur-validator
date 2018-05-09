@@ -1,4 +1,4 @@
-const Transaction = require('./transaction');
+const Transaction = require('./../transaction');
 
 module.exports = class CoinTransaction extends Transaction {
   constructor() {
