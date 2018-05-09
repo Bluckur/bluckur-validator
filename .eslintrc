@@ -1,5 +1,5 @@
 {
-    "extends": ["eslint:recommended", "google"],
+    "extends": ["airbnb-base"],
     "rules": {
         "no-console": "off",
         "linebreak-style": 0,

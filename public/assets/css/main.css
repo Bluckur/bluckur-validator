@@ -10,6 +10,10 @@
 
 /* Reset */
 
+.qr-code-input {
+  margin: 0.5em !important;
+}
+
 html,
 body,
 div,
