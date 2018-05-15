@@ -1,20 +1,14 @@
 let level = require('level');
 const verbose = true;
 
-const databasePath = '../database';
+const DATABASE_PATH = '../database';
 
 
 let db;
 
 class Database {
     constructor() {
-        this.open();
-    }
-
-    open() {
-        this.db = level(databasePath, {createIfMissing: false}, function(err, db) {
-            if (err && verbose) console.log(err);
-        });
+        this.db = level(DATABASE_PATH);
     }
 
     close() {
@@ -46,12 +40,10 @@ class Database {
                 if (value) resolve(value);
             });
         });
-
-
     }
 
     /**
-     *
+     * Delete 
      * @param {*} key
      */
     delete(key) {
