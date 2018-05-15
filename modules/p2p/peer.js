@@ -4,7 +4,7 @@
 
 const ioServer = require('socket.io');
 const ioClient = require('socket.io-client')
-const InitialConnector = require('./initalconnector.js')
+const InitialConnector = require('./initialconnector.js')
 
 /**
  * Default message
@@ -26,9 +26,11 @@ class Peer {
         this.handleClient();
 
         var initalconnector = new InitialConnector();
-        initalconnector.initate( () => {
-            console.log("My ip: " + initalconnector.getMyIP() + " - Peer ip: " + initalconnector.getInitialPeerIP());
-        });
+        initalconnector.initiate().then((result) => {
+            console.log(result);
+        }, (err) =>{
+            console.log(err);
+        })
     }
 
     handleServer() {
