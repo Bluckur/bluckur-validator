@@ -33,8 +33,8 @@ class Database {
     return new Promise((resolve) => {
       this.db.put(key, value, (err) => {
         if (err && verbose) console.log(`Unable to put ${value}into the database.`, err); // some kind of I/O error
+        resolve(true);
       })
-        .then(() => { resolve(true); });
     });
   }
 
@@ -44,7 +44,7 @@ class Database {
      * @return {*} value
      */
   get(key) {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
       this.db.get(key, (err, value) => {
         if (err && verbose) return console.log(`${key} has no matches`);
         if (value) resolve(value);
