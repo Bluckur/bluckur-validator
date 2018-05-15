@@ -1,6 +1,6 @@
 const bluckurSchemas = require('bluckur-models');
 const SchemaObject = require('schema-object');
 
-const Block = new SchemaObject(bluckurSchemas.block);
+const Transaction = new SchemaObject(bluckurSchemas.transaction);
 
-module.exports = Block;
+module.exports = Transaction;
