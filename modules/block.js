@@ -67,15 +67,15 @@ class Block {
      * and compares it to the blockHash in the header.
      * @return {boolean}
      */
-  // hasValidHeader() {
-  //   return new Promise((resolve, reject) => {
-  //     this.header.blockHash === this.header.calculateBlockHash(this.transactions).then((hash) => {
-  //       resolve(this.header.blockHash === hash);
-  //     }).catch((err) => {
-  //       reject(err);
-  //     });
-  //   });
-  // }
+  hasValidHeader() {
+    return new Promise((resolve, reject) => {
+      this.header.blockHash === this.header.calculateBlockHash(this.transactions).then((hash) => {
+        resolve(this.header.blockHash === hash);
+      }).catch((err) => {
+        reject(err);
+      });
+    });
+  }
 
   /**
      * Gets the balance of an address for this block.
