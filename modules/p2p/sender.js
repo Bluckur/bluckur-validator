@@ -21,7 +21,7 @@ class Sender {
 
     sendNewPeerRequest(myIp, peerIp){
         console.log(myIp + " - " + peerIp)
-        var client = ioClient.connect('http://localhost:8080'); //ToDo: add client receive events and change ip + port
+        var client = ioClient.connect('http://localhost:8080'); //ToDo: add client receive events and change ip + port And maybe make generic newClient method
         this.receiver.addClientReceives(client);
     }
 }
