@@ -1,10 +1,6 @@
+const bluckurSchemas = require('bluckur-models');
 const SchemaObject = require('schema-object');
-const BlockHeader = require('./blockHeader');
-const Transaction = require('./transaction');
 
-const Block = new SchemaObject({
-  transaction: [Transaction],
-  blockHeader: BlockHeader,
-});
+const Block = new SchemaObject(bluckurSchemas.block);
 
 module.exports = Block;
