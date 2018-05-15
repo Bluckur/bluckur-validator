@@ -1,6 +1,6 @@
 // This class mimics a FIFO collection in javascript
 
-class Queue {
+module.exports = class Queue {
     constructor(length) {
         this.max = length;
         this.data = [];

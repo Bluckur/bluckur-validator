@@ -1,5 +1,7 @@
 // Hier moet server en client zooi in gebeuren (het ontvangen en verzenden dus) eventueel kan hier ook de peer/sessie lijst bijgehouden worden.
 
+const Peer = require('./peer');
+
 /**
  * Default message
  */
@@ -12,8 +14,9 @@ module.exports = class InitialConnector {
     constructor(firstTimeout) {
         this.ip = "http://145.93.112.227:8082";
         this.myIp = undefined;
-        this.peerIp = undefined;
+        this.peerIp = undefined
         this.timeout = firstTimeout;
+        // console.log(Peer.getPeerQueue());
     }
 
     getMyIP(){
