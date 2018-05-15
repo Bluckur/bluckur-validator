@@ -6,6 +6,8 @@ const ioServer = require('socket.io');
 const ioClient = require('socket.io-client')
 const InitialConnector = require('./initialconnector.js')
 const Queue = require('./Models/queue.js')
+const Sender = require('./sender');
+const Receiver = require('./receiver');
 
 /**
  * Default message
@@ -23,12 +25,12 @@ class Peer {
         this.client = ioClient.connect('http://localhost:' + this.port);
         this.server = ioServer.listen(this.port);
 
-        // this.handleServer();
-        // this.handleClient();
+        this.sender = new Sender(this.server, this.client);
+        this.receiver = new Receiver(this.server, this.client);
 
-        var initalconnector = new InitialConnector();
+        var initalconnector = new InitialConnector(2000); //Check every 2 secs for other peer when you are first peer.
         initalconnector.initiate().then((result) => {
-            console.log(result);
+            console.log(result); //ToDo: Start connection thingy.
         }, (err) =>{
             console.log(err);
         })
@@ -36,35 +38,6 @@ class Peer {
 
     static get PeerQueue(){
         return PQueue;
-    }
-
-    handleServer() {
-        if (this.server) {
-            // event fired every time a new client connects:
-            this.server.on('connection', (socket) => {
-
-                socket.on('disconnect', () => {
-                    
-                });
-                socket.on('message_isAlive', (message) => {
-                    socket.emit("message_isAlive", "Yes, I am online")
-                })
-            });
-
-            // sends each client its current sequence number
-            // setInterval(() => {
-            //     for (const [client, sequenceNumber] of this.sequenceNumberByClient.entries()) {
-            //         client.emit('seq-num', sequenceNumber);
-            //         this.sequenceNumberByClient.set(client, sequenceNumber + 1);
-            //     }
-            // }, 1000);
-        }
-    }
-
-    handleClient() {
-        if (this.client) {
-            this.client.on('seq-num', (msg) => console.info(msg));
-        }
     }
 }
 

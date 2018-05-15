@@ -31,8 +31,11 @@ module.exports = class InitialConnector {
 
         var promise = new Promise((resolve, reject) => {
             thisConnector.handleRegisterIP().then((result) => {
-                if (thisConnector.myIp !== undefined) {
-                    resolve("Works! IP " + thisConnector.myIp + " JEROENS PENIS: " + thisConnector.peerIp);
+                if (thisConnector.myIp !== undefined && thisConnector.peerIp !== undefined) {
+                    resolve({
+                        peerIp: thisConnector.peerIp,
+                        myIp: thisConnector.myIp
+                    });
                 } else {
                     reject(Error("Rejected no IP"));
                 }
@@ -99,9 +102,7 @@ module.exports = class InitialConnector {
                 if (body === "first") {
                     setTimeout(() => {
                         this.handleGetPeerIP().then((result) => {
-                            console.log(result);
                         }, (err) => {
-                            console.log(err);
                         });
                     }, this.timeout)
                 } else {
