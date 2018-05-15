@@ -27,7 +27,7 @@ class Peer {
 
         var initalconnector = new InitialConnector();
         initalconnector.initate( () => {
-            console.log("My ip:" + initalconnector.getMyIP() + " - Peer ip: " + initalconnector.getInitialPeerIP());
+            console.log("My ip: " + initalconnector.getMyIP() + " - Peer ip: " + initalconnector.getInitialPeerIP());
         });
     }
 

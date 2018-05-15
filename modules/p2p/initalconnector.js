@@ -51,7 +51,7 @@ module.exports = class InitialConnector {
 
     handleRegisterIP(){
         this.sendRequest("/register", (error) => {
-            throw "Encountered fatal error: Could not register IP from IP-serivce...";
+            throw "Encountered fatal error: Could not register IP to IP-serivce...";
         }, (response, body) => {
             console.log("Successfully registered our IP to the IP-service")
             this.handleGetMyIP();
