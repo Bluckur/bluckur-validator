@@ -12,13 +12,13 @@ class Database {
     }
 
     open() {
-        this.db = level(databasePath, {createIfMissing: false}, function(err, db) {
+        this.db = level(databasePath, {createIfMissing: false}, function (err, db) {
             if (err && verbose) console.log(err);
         });
     }
 
     close() {
-        this.db.close(function(err) {
+        this.db.close(function (err) {
             if (err && verbose) console.log(err);
         });
     }
@@ -29,7 +29,7 @@ class Database {
      * @param {*} value
      */
     put(key, value) {
-        this.db.put(key, value, function(err) {
+        this.db.put(key, value, function (err) {
             if (err && verbose) console.log('Unable to put ' + value + 'into the database.', err); // some kind of I/O error
         });
     }
@@ -41,7 +41,7 @@ class Database {
      */
     get(key) {
         return new Promise((resolve, reject) => {
-            this.db.get(key, function(err, value) {
+            this.db.get(key, function (err, value) {
                 if (err && verbose) return console.log(key + ' has no matches');
                 if (value) resolve(value);
             });
@@ -55,7 +55,7 @@ class Database {
      * @param {*} key
      */
     delete(key) {
-        this.db.del(key, function(err) {
+        this.db.del(key, function (err) {
             if (err && verbose) console.log(err);
         });
     }
@@ -65,11 +65,10 @@ class Database {
      * @param {*} ops {type: 'put/del', key:'key', value:'value'}
      */
     batch(ops) {
-        this.db.batch(ops, function(err) {
+        this.db.batch(ops, function (err) {
             if (err && verbose) console.log(err);
         });
     }
 }
 
-
-// 3) Fetch by key
+module.exports = Database;
