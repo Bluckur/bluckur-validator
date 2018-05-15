@@ -1,9 +1,11 @@
 //Handle all messages to send, regardless of them being form the 'server' or 'client'
+const InitialConnector = require('./initialconnector.js')
+const ioClient = require('socket.io-client')
 
 class Sender {
-    constructor(ioServer, ioClient){
+    constructor(ioServer, receiver){
         this.server = ioServer;
-        this.client = ioClient;
+        this.receiver = receiver;
 
         //Example server send:
         //socket will come from the Queue
@@ -11,6 +13,16 @@ class Sender {
 
         //Example client send:
         //client.emit('seq-num', sequenceNumber);
+
+        //Only add connections to queue which are made by sender...
+
+        //ToDo: NSSocket??
+    }
+
+    sendNewPeerRequest(myIp, peerIp){
+        console.log(myIp + " - " + peerIp)
+        var client = ioClient.connect('http://localhost:8080'); //ToDo: add client receive events and change ip + port
+        this.receiver.addClientReceives(client);
     }
 }
 

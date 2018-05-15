@@ -18,11 +18,11 @@ module.exports = class InitialConnector {
         this.timeout = firstTimeout;
     }
 
-    getMyIP() {
+    static get MyIP() {
         return this.myIp;
     }
 
-    getInitialPeerIP() {
+    static get InitialPeerIP() {
         return this.peerIp;
     }
 

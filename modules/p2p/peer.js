@@ -22,14 +22,15 @@ class Peer {
     constructor() {
         //NOTE: We need to handle our own list and cannot use the list provided by socketio. Because we now also use it to check connectivity
         this.port = 8080;
-        this.client = ioClient.connect('http://localhost:' + this.port);
+        // this.client = ioClient.connect('http://localhost:' + this.port);
         this.server = ioServer.listen(this.port);
 
-        this.sender = new Sender(this.server, this.client);
-        this.receiver = new Receiver(this.server, this.client);
+        this.receiver = new Receiver(this.server);
+        this.sender = new Sender(this.server, this.receiver);
 
         var initalconnector = new InitialConnector(2000); //Check every 2 secs for other peer when you are first peer.
         initalconnector.initiate().then((result) => {
+            this.sender.sendNewPeerRequest(result.myIp, result.peerIp);
             console.log(result); //ToDo: Start connection thingy.
         }, (err) =>{
             console.log(err);
