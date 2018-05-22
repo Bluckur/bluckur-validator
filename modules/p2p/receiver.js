@@ -27,22 +27,18 @@ class Receiver {
                     copy.clearSockets();
                     if (this.PeerQueue.isFull()) {
                         copy.flip()
-                        PeerQueue.remove()
-                        this.PeerQueue.add({
-                            client: socket,
-                            ip: message
-                        })
-
-                    } else {
-                        this.PeerQueue.add({
-                            client: socket,
-                            ip: message
-                        })
                     }
+                    this.PeerQueue.add({
+                        client: socket,
+                        ip: message
+                    })
 
                     socket.emit('init_connections', {
                         peers: copy
                     })
+
+                    console.log("copy:")
+                    console.log(copy)
                 })
             });
         }
@@ -58,11 +54,13 @@ class Receiver {
                     this.PeerQueue.add(peer)
                 });
                 this.PeerQueue.add({
-                    client: client,
+                    client: ioClient.connect('http://' + new InitialConnector().InitialPeerIP() + ':8080'),
                     ip: new InitialConnector().InitialPeerIP()
                 })
             })
             // DO I HAVE ENOUGH, DO I need to start calling for help
+            console.log("PeerQueue")
+            console.log(this.PeerQueue)
         }
     }
 }
