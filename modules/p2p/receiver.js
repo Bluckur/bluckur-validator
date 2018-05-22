@@ -23,17 +23,17 @@ class Receiver {
                     socket.emit("message_isAlive", "Yes, I am online")
                 })
                 socket.on('new_peer', (message) => {
-                    if (PeerQueue.isFull()) {
-                        let copy = Peer.PeerQueue.copy()
+                    if (Peer.PeerQueue().isFull()) {
+                        let copy = Peer.PeerQueue().copy()
                         copy.flip()
                         PeerQueue.remove()
-                        Peer.PeerQueue.add({
+                        Peer.PeerQueue().add({
                             client: socket,
                             ip: message
                         })
 
                     } else {
-                        let copy = Peer.PeerQueue.copy()
+                        let copy = Peer.PeerQueue().copy()
                         Peer.PeerQueue.add({
                             client: socket,
                             ip: message
@@ -52,15 +52,14 @@ class Receiver {
         if (client) {
             client.on('new_peer', (received) => {
                 console.log("Received QUEUE:" + received.peers)
-                if (!received.peers.isFull()) {
-                    received.peers.remove()
-                    received.peers.add({
-                        ip: InitialConnector.MyIP()
-                    })
-                }
-                received.peers.forEach(peer => {
-                    peer.client = ioClient.connect('http://' + peer.ip + ':8080'); //ToDo: add client receive events and change ip + port And maybe make generic newClient method
-                    Peer.PeerQueue.add(peer)
+
+                received.peers.add({
+                    ip: InitialConnector.MyIP()
+                })
+
+                receaddClientReceivesaddClientReceivesived.peers.forEach(peer => {
+                    peer.client = ioClient.connect('http://' + peer.ip + ':8080');
+                    Peer.PeerQueue().add(peer)
                 });
                 console.log("FINAL QUEUE:" + Peer.PeerQueue())
             })
