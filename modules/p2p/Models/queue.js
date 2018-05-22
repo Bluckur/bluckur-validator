@@ -3,9 +3,10 @@
 module.exports = class Queue {
     constructor(length, data) {
         this.max = 4;
-        this.data = data;
-        if(!this.data){
+        if(!data && data !== null){
             this.data = [];
+        }else{
+            this.data = data;
         }
     }
 
@@ -40,6 +41,12 @@ module.exports = class Queue {
 
     flip() {
         this.data.reverse();
+    }
+
+    clearSockets(){
+        this.data.forEach(element => {
+            element.client = undefined;
+        });
     }
 
     copy() {
