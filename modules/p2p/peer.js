@@ -35,13 +35,11 @@ module.exports = class Peer {
         this.port = 8080;
         // this.client = ioClient.connect('http://localhost:' + this.port);
         this.server = ioServer.listen(this.port);
-        console.log(this.PeerQueue)
         this.receiver = new Receiver(this.server, this.PeerQueue);
         this.sender = new Sender(this.server, this.receiver, this.PeerQueue);
 
         var initalconnector = new InitialConnector(2000); //Check every 2 secs for other peer when you are first peer.
         initalconnector.initiate().then((result) => {
-            console.log(result); //ToDo: Start connection thingy.
             this.sender.sendNewPeerRequest(result.myIp, result.peerIp);
         }, (err) =>{
             // console.log(err);

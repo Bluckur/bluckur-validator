@@ -6,7 +6,9 @@ module.exports = class Queue {
         if(!data && data !== null){
             this.data = [];
         }else{
-            this.data = data;
+            data.forEach(element => {
+                this.add(element)
+            });
         }
     }
 

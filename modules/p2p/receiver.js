@@ -24,6 +24,7 @@ class Receiver {
                 })
                 socket.on('new_peer', (message) => {
                     let copy = new Queue(4, this.PeerQueue.data);
+                    copy = JSON.parse(JSON.stringify(copy));
                     copy.clearSockets();
                     if (this.PeerQueue.isFull()) {
                         copy.flip()
@@ -56,7 +57,6 @@ class Receiver {
                 queue.add({
                     ip: new InitialConnector().InitialPeerIP()
                 })
-                console.log(queue.data)
                 queue.data.forEach(peer => {
                     peer.client = ioClient.connect('http://' + peer.ip + ':8080');
                     this.PeerQueue.add(peer)
