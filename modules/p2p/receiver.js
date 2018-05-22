@@ -23,8 +23,9 @@ class Receiver {
                     socket.emit("message_isAlive", "Yes, I am online")
                 })
                 socket.on('new_peer', (message) => {
+                    let copy = [];
                     if (this.PeerQueue.isFull()) {
-                        let copy = this.PeerQueue.copy()
+                        copy = this.PeerQueue.copy()
                         copy.flip()
                         PeerQueue.remove()
                         this.PeerQueue.add({
@@ -33,15 +34,15 @@ class Receiver {
                         })
 
                     } else {
-                        let copy = this.PeerQueue.copy()
+                        copy = this.PeerQueue.copy()
                         this.PeerQueue.add({
                             client: socket,
                             ip: message
                         })
                     }
                     socket.emit('new_peer', {
-                        peers: toSend,
-                        ip: InitialConnector.MyIP()
+                        peers: copy,
+                        ip: InitialConnector.myIp
                     })
                 })
             });
