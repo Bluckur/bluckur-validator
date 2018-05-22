@@ -1,9 +1,12 @@
 // This class mimics a FIFO collection in javascript
 
 module.exports = class Queue {
-    constructor(length) {
-        this.max = length;
-        this.data = [];
+    constructor(length, data) {
+        this.max = 4;
+        this.data = data;
+        if(!this.data){
+            this.data = [];
+        }
     }
 
     add(record) {

@@ -52,12 +52,13 @@ class Receiver {
     addClientReceives(client) {
         if (client) {
             client.on('new_peer', (received) => {
-                console.log("Received QUEUE:" + received.ip)
-                received.peers.add({
+                console.log(received.peers)
+                let queue = new Queue(4, received.peers.data);
+                queue.add({
                     ip: new InitialConnector().MyIP()
                 })
 
-                receaddClientReceivesaddClientReceivesived.peers.forEach(peer => {
+                queue.data.forEach(peer => {
                     peer.client = ioClient.connect('http://' + peer.ip + ':8080');
                     this.PeerQueue.add(peer)
                 });
