@@ -26,7 +26,7 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "create-executable": "[-d \"executables\"] cd executables && rm * & cd .. || rmdir executables] & pkg server.js --out-path ./executables"
+    "create-executables": "pkg ./server.js --out-path ./executables"
   },
   "repository": {
     "type": "git",
