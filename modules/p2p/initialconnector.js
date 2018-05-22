@@ -12,7 +12,8 @@ module.exports = class InitialConnector {
      */
 
     constructor(firstTimeout) {
-        this.ip = "http://145.93.112.227:8082";
+        // this.ip = "http://145.93.137.20:8082";
+        this.ip = "http://145.93.112.221:8082";
         this.myIp = undefined;
         this.peerIp = undefined;
         this.timeout = firstTimeout;
@@ -72,7 +73,6 @@ module.exports = class InitialConnector {
                 })
             });
         })
-
     }
 
     handleGetMyIP() {
