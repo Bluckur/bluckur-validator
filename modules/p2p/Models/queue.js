@@ -1,5 +1,7 @@
 // This class mimics a FIFO collection in javascript
 
+const InitialConnector = require('./initialconnector.js')
+
 module.exports = class Queue {
     constructor(length, data) {
         this.max = 4;
@@ -12,10 +14,13 @@ module.exports = class Queue {
     }
 
     add(record) {
+        if(record.ip && !record.ip === new InitialConnector.MyIP())
+        {
         this.data.unshift(record);
         if (this.data.length > this.max) {
             this.remove();
         }
+    }
     }
 
     remove() {

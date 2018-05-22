@@ -39,7 +39,7 @@ class Receiver {
                             ip: message
                         })
                     }
-                    console.log(copy)
+                    
                     socket.emit('new_peer', {
                         peers: copy,
                         ip: new InitialConnector().MyIP()
