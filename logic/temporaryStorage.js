@@ -28,7 +28,7 @@ class TemporaryStorage {
     addProposedBlock(proposedBlock){
         var exists = false;
         const existingBlock = this.proposedBlocks.filter(block => block.id === proposedBlock.id);
-        if(existingBlock.length === 0){
+        if(existingBlock.length === 0){ 
             this.proposedBlocks.push(proposedBlock);
         }
     }
