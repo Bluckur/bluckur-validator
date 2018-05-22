@@ -1,5 +1,6 @@
 require('dotenv').config();
 
+const Validator = require('./lib/validator');
 const Receiver = require('./services/receiver.js');
 const Sender = require('./services/sender');
 const nodeFactory = require('./services/nodeFactory.js');
@@ -60,6 +61,8 @@ function initNode() {
   node.start();
   connected = true;
   console.log('Validator listening on port %s', PORT);
+
+  Validator.createInstance().initBlockchain();
 }
 
 // Start listening with WebSockets
