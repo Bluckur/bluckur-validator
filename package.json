@@ -2,7 +2,7 @@
   "name": "validator",
   "version": "1.0.0",
   "description": "blockchain-validator",
-  "main": "validator.js",
+  "main": "server.js",
   "dependencies": {
     "async": "^2.6.0",
     "bip39": "^2.5.0",
