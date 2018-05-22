@@ -16,10 +16,19 @@ class LotteryTask {
                 });
 
                 if(block.transactions.length > chosenBlock.transactions.length){
-                    
+                    chosenBlock.transactions.map((transactionFromChosenBlock) => {
+                        notValidatedTransactions.remove(transactionFromChosenBlock.id);
+                    });
                 }
 
-            })
+                notValidatedTransactions.forEach(function(value, key) {
+                    temporaryStorage.getInstance().addPendingTransaction(value, key);
+                });
+
+                //TODO: Add transactions and block to the global state.
+            });
+
+            temporaryStorage.getInstance().clearProposedBlocks();
         }, 10000);
     }
 }

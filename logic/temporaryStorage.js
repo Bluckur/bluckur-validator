@@ -19,6 +19,10 @@ class TemporaryStorage {
         this.pendingTransactions.set(transaction.id, transaction);
     }
 
+    addPendingTransactionFromMap(key, value){
+        this.pendingTransactions.set(key, value);
+    }
+
     addPendingTransactions(transactions){
         transactions.map((transaction) => {
             this.addPendingTransaction(transaction);
