@@ -1,13 +1,12 @@
 //Handle all messages received, regardless of them being form the 'server' or 'client'
-const Peer = require('./peer')
-const Queue = require('././Models/queue')
+const Queue = require('./Models/queue')
 const InitialConnector = require('./initialconnector')
 const ioClient = require('socket.io-client')
+const Peer = require('./peer')
 
 class Receiver {
     constructor(ioServer, disconnector) {
         this.server = ioServer;
-
         this.handleServerReceives();
     }
 
@@ -23,17 +22,17 @@ class Receiver {
                     socket.emit("message_isAlive", "Yes, I am online")
                 })
                 socket.on('new_peer', (message) => {
-                    if (Peer.PeerQueue().isFull()) {
-                        let copy = Peer.PeerQueue().copy()
+                    if (Peer.PeerQueue.isFull()) {
+                        let copy = Peer.PeerQueue.copy()
                         copy.flip()
                         PeerQueue.remove()
-                        Peer.PeerQueue().add({
+                        Peer.PeerQueue.add({
                             client: socket,
                             ip: message
                         })
 
                     } else {
-                        let copy = Peer.PeerQueue().copy()
+                        let copy = Peer.PeerQueue.copy()
                         Peer.PeerQueue.add({
                             client: socket,
                             ip: message

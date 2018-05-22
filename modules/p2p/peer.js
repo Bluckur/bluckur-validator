@@ -12,15 +12,30 @@ const Receiver = require('./receiver');
 /**
  * Default message
  */
-const PQueue = new Queue(4); // Defines a queue for peers to save locally. 4 is maximum size.
+// const PQueue = new Queue(4); // Defines a queue for peers to save locally. 4 is maximum size.
 
-class Peer {
+let instance;
+
+module.exports = class Peer {
     /**
      *
      * 
      */
     constructor() {
         //NOTE: We need to handle our own list and cannot use the list provided by socketio. Because we now also use it to check connectivity
+        if(!instance){
+            instance = this;
+            this.PeerQueue = new Queue(4);
+        }
+
+        return instance;
+    }
+
+    getPeerQueue(){
+        return this.PeerQueue;
+    }
+
+    initate(){
         this.port = 8080;
         // this.client = ioClient.connect('http://localhost:' + this.port);
         this.server = ioServer.listen(this.port);
@@ -34,15 +49,10 @@ class Peer {
             this.sender.sendNewPeerRequest(result.myIp, result.peerIp);
         }, (err) =>{
             // console.log(err);
-        })
+        }) 
     }
 
-    static get PeerQueue(){
-        return PQueue;
-    }
+    // static get PeerQueue(){
+    //     return PQueue;
+    // }
 }
-
-
-new Peer();
-
-module.exports = Peer;
