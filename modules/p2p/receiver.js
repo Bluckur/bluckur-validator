@@ -42,7 +42,7 @@ class Receiver {
                     }
                     socket.emit('new_peer', {
                         peers: copy,
-                        ip: InitialConnector.myIp
+                        ip: new InitialConnector().MyIP()
                     })
                 })
             });
@@ -52,10 +52,9 @@ class Receiver {
     addClientReceives(client) {
         if (client) {
             client.on('new_peer', (received) => {
-                console.log("Received QUEUE:" + received.peers)
-
+                console.log("Received QUEUE:" + received.ip)
                 received.peers.add({
-                    ip: InitialConnector.MyIP()
+                    ip: new InitialConnector().MyIP()
                 })
 
                 receaddClientReceivesaddClientReceivesived.peers.forEach(peer => {

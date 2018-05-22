@@ -4,6 +4,7 @@
  * Default message
  */
 var thisConnector;
+let instance;
 
 module.exports = class InitialConnector {
     /**
@@ -13,17 +14,21 @@ module.exports = class InitialConnector {
 
     constructor(firstTimeout) {
         // this.ip = "http://145.93.137.20:8082";
-        this.ip = "http://145.93.112.221:8082";
-        this.myIp = undefined;
-        this.peerIp = undefined;
-        this.timeout = firstTimeout;
+        if (!instance) {
+            this.ip = "http://145.93.112.221:8082";
+            this.myIp = undefined;
+            this.peerIp = undefined;
+            this.timeout = firstTimeout;
+            instance = this;
+        }
+        return instance;
     }
 
-    static get MyIP() {
+    MyIP() {
         return this.myIp;
     }
 
-    static get InitialPeerIP() {
+    InitialPeerIP() {
         return this.peerIp;
     }
 
