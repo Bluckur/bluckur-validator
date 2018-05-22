@@ -23,7 +23,7 @@ class Receiver {
                     socket.emit("message_isAlive", "Yes, I am online")
                 })
                 socket.on('new_connection', (message) => {
-                    new Peer().sleeping = false // This is needed to stop the sleeping of the peer if he was first
+                    new InitialConnector().sleeping = false // This is needed to stop the sleeping of the peer if he was first
                     let copy = new Queue(4, this.PeerQueue.data);
                     copy.clearSockets();
                     if (this.PeerQueue.isFull()) {

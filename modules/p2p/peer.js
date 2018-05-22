@@ -26,7 +26,7 @@ module.exports = class Peer {
         if (!instance) {
             instance = this;
             this.PeerQueue = new Queue(4);
-            this.sleeping = false;
+            new InitialConnector().sleeping = false;
         }
 
         return instance;
@@ -41,19 +41,13 @@ module.exports = class Peer {
 
         var initalconnector = new InitialConnector(2000); //Check every 2 secs for other peer when you are first peer.
         initalconnector.initiate().then((result) => {
-            if (result.peerIp === "first") {
-                this.waitTillConnection()
+            if (!result.peerIp === "first") {
+                this.sender.sendNewPeerRequest(result.myIp, result.peerIp);
+
             }
-            this.sender.sendNewPeerRequest(result.myIp, result.peerIp);
         }, (err) => {
             // console.log(err);
         })
     }
 
-    waitTillConnection() {
-        if (this.sleeping)
-            setTimeout(() => {
-                this.waitTillConnection()
-            }, 2000)
-    }
 }
