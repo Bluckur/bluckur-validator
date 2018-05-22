@@ -5,11 +5,12 @@ const Receiver = require('./services/receiver.js');
 const Sender = require('./services/sender');
 const nodeFactory = require('./services/nodeFactory.js');
 const Messager = require('./util/messager');
-const Security = require('./logic/security');
 const QrCodeGenerator = require('./services/qrCodeGenerator');
 const opn = require('opn');
 const express = require('express');
 const http = require('http');
+const Models = require('bluckur-models');
+const Security = require('./lib/security/security').getInstance();
 
 const qrCodeGenerator = new QrCodeGenerator();
 
@@ -62,7 +63,19 @@ function initNode() {
   connected = true;
   console.log('Validator listening on port %s', PORT);
 
-  Validator.createInstance().initBlockchain();
+  const transaction = Models.createTransactionInstance({
+    recipient: '6422896f230161b322ad4faa0a15712cb7d95f7a1e69487ae03a388a75d3a27b',
+    amount: 69,
+    timestamp: +new Date(),
+    type: 'coin',
+    sender: '6422896f230161b322ad4faa0a15712cb7d95f7a1e69487ae03a388a75d3a27b',
+  });
+  Security.signDetached(transaction, '03050603000600000502030105000100000500050002000408020000090408066422896f230161b322ad4faa0a15712cb7d95f7a1e69487ae03a388a75d3a27b').then((signature) => {
+    transaction.signature = signature;
+    Validator.createInstance().addTransaction(transaction);
+  }).catch((err) => {
+    console.log(err);
+  });
 }
 
 // Start listening with WebSockets
