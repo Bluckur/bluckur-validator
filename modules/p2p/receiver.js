@@ -22,7 +22,7 @@ class Receiver {
                 socket.on('message_isAlive', (message) => {
                     socket.emit("message_isAlive", "Yes, I am online")
                 })
-                socket.on('new_peer', (message) => {
+                socket.on('new_connection', (message) => {
                     let copy = new Queue(4, this.PeerQueue.data);
                     copy.clearSockets();
                     if (this.PeerQueue.isFull()) {
@@ -39,10 +39,9 @@ class Receiver {
                             ip: message
                         })
                     }
-                    
-                    socket.emit('new_peer', {
-                        peers: copy,
-                        ip: new InitialConnector().MyIP()
+
+                    socket.emit('init_connections', {
+                        peers: copy
                     })
                 })
             });
@@ -51,18 +50,19 @@ class Receiver {
 
     addClientReceives(client) {
         if (client) {
-            client.on('new_peer', (received) => {
+            client.on('init_connections', (received) => {
                 let queue = new Queue(4, received.peers.data);
-                queue.add({
-                    ip: new InitialConnector().InitialPeerIP()
-                })
+
                 queue.data.forEach(peer => {
                     peer.client = ioClient.connect('http://' + peer.ip + ':8080');
                     this.PeerQueue.add(peer)
                 });
-                console.log(this.PeerQueue);
+                this.PeerQueue.add({
+                    client: client,
+                    ip: new InitialConnector().InitialPeerIP()
+                })
             })
-            // DO I HAVE ENOUGH
+            // DO I HAVE ENOUGH, DO I need to start calling for help
         }
     }
 }
