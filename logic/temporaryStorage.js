@@ -3,12 +3,8 @@ const hashMap = require("hashmap");
 class TemporaryStorage {
 
     constructor(){
-        if(this.pendingTransactions === undefined){
-            this.pendingTransactions = new HashMap();
-        } 
-        if(this.proposedBlocks === undefined){
-            this.proposedBlocks = [];
-        }
+        this.pendingTransactions = new HashMap();
+        this.proposedBlocks = [];
     }
 
     clearProposedBlocks(){
@@ -31,13 +27,8 @@ class TemporaryStorage {
 
     addProposedBlock(proposedBlock){
         var exists = false;
-        this.proposedBlocks.map((block) => {
-            if(proposedBlock.id === block.id){
-                exists = true;
-            }
-        })
-
-        if(!exists){
+        const existingBlock = this.proposedBlocks.filter(block => block.id === proposedBlock.id);
+        if(existingBlock.length === 0){
             this.proposedBlocks.push(proposedBlock);
         }
     }
