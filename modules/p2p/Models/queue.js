@@ -38,4 +38,16 @@ module.exports = class Queue {
     flip() {
         this.data.reverse();
     }
+
+    copy() {
+        let q = new Queue(this.max)
+        q.data = this.data.map(element => {
+            ip: element.ip
+        });
+        return q
+    }
+
+    isFull(){
+        return this.max === this.size()
+    }
 }
