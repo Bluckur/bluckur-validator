@@ -14,7 +14,7 @@ module.exports = class Queue {
     }
 
     add(record) {
-        if (record.ip && !record.ip === new InitialConnector().MyIP()) {
+       if (record.ip && !record.ip !== new InitialConnector().MyIP()) {
             this.data.unshift(record);
             if (this.data.length > this.max) {
                 this.remove();

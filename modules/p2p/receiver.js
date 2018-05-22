@@ -53,14 +53,16 @@ class Receiver {
                     peer.client = ioClient.connect('http://' + peer.ip + ':8080');
                     this.PeerQueue.add(peer)
                 });
+                console.log("INIT PEER : ", new InitialConnector().InitialPeerIP())
                 this.PeerQueue.add({
                     client: ioClient.connect('http://' + new InitialConnector().InitialPeerIP() + ':8080'),
                     ip: new InitialConnector().InitialPeerIP()
                 })
+                console.log("PeerQueue")
+                console.log(this.PeerQueue)
             })
             // DO I HAVE ENOUGH, DO I need to start calling for help
-            console.log("PeerQueue")
-            console.log(this.PeerQueue)
+
         }
     }
 }
