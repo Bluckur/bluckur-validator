@@ -5,10 +5,9 @@ const ioClient = require('socket.io-client')
 const Peer = require('./peer')
 
 class Receiver {
-    constructor(ioServer, disconnector, PeerQueue) {
+    constructor(ioServer, PeerQueue) {
         this.server = ioServer;
         this.PeerQueue = PeerQueue;
-        console.log(PeerQueue);
         this.handleServerReceives();
     }
 
