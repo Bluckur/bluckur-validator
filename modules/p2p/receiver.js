@@ -5,8 +5,10 @@ const ioClient = require('socket.io-client')
 const Peer = require('./peer')
 
 class Receiver {
-    constructor(ioServer, disconnector) {
+    constructor(ioServer, disconnector, PeerQueue) {
         this.server = ioServer;
+        this.PeerQueue = PeerQueue;
+        console.log(PeerQueue);
         this.handleServerReceives();
     }
 
@@ -22,18 +24,18 @@ class Receiver {
                     socket.emit("message_isAlive", "Yes, I am online")
                 })
                 socket.on('new_peer', (message) => {
-                    if (Peer.PeerQueue.isFull()) {
-                        let copy = Peer.PeerQueue.copy()
+                    if (this.PeerQueue.isFull()) {
+                        let copy = this.PeerQueue.copy()
                         copy.flip()
                         PeerQueue.remove()
-                        Peer.PeerQueue.add({
+                        this.PeerQueue.add({
                             client: socket,
                             ip: message
                         })
 
                     } else {
-                        let copy = Peer.PeerQueue.copy()
-                        Peer.PeerQueue.add({
+                        let copy = this.PeerQueue.copy()
+                        this.PeerQueue.add({
                             client: socket,
                             ip: message
                         })
@@ -58,7 +60,7 @@ class Receiver {
 
                 receaddClientReceivesaddClientReceivesived.peers.forEach(peer => {
                     peer.client = ioClient.connect('http://' + peer.ip + ':8080');
-                    Peer.PeerQueue().add(peer)
+                    this.PeerQueue.add(peer)
                 });
                 console.log("FINAL QUEUE:" + Peer.PeerQueue())
             })

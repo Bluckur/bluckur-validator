@@ -31,17 +31,13 @@ module.exports = class Peer {
         return instance;
     }
 
-    getPeerQueue(){
-        return this.PeerQueue;
-    }
-
     initate(){
         this.port = 8080;
         // this.client = ioClient.connect('http://localhost:' + this.port);
         this.server = ioServer.listen(this.port);
-
-        this.receiver = new Receiver(this.server);
-        this.sender = new Sender(this.server, this.receiver);
+        console.log(this.PeerQueue)
+        this.receiver = new Receiver(this.server, this.PeerQueue);
+        this.sender = new Sender(this.server, this.receiver, this.PeerQueue);
 
         var initalconnector = new InitialConnector(2000); //Check every 2 secs for other peer when you are first peer.
         initalconnector.initiate().then((result) => {
@@ -51,8 +47,4 @@ module.exports = class Peer {
             // console.log(err);
         }) 
     }
-
-    // static get PeerQueue(){
-    //     return PQueue;
-    // }
 }
