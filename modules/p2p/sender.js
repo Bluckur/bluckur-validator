@@ -24,10 +24,6 @@ class Sender {
     sendNewPeerRequest(myIp, peerIp) {
         console.log(myIp + " - " + peerIp)
         var client = ioClient.connect('http://' + peerIp + ':8080'); //ToDo: add client receive events and change ip + port And maybe make generic newClient method
-        Peer.PeerQueue().add({
-            client: client,
-            ip: peerIp
-        })
         this.receiver.addClientReceives(client);
         client.emit("new_peer", myIp)
     }
