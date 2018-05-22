@@ -3,9 +3,8 @@
 module.exports = class Queue {
     constructor(length, data) {
         this.max = 4;
-        if(!data && data !== null){
-            this.data = [];
-        }else{
+        this.data = [];
+        if(data !== undefined && data !== null){
             data.forEach(element => {
                 this.add(element)
             });

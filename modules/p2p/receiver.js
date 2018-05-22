@@ -24,7 +24,6 @@ class Receiver {
                 })
                 socket.on('new_peer', (message) => {
                     let copy = new Queue(4, this.PeerQueue.data);
-                    copy = JSON.parse(JSON.stringify(copy));
                     copy.clearSockets();
                     if (this.PeerQueue.isFull()) {
                         copy.flip()
