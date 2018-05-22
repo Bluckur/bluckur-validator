@@ -105,11 +105,12 @@ module.exports = class InitialConnector {
                     reject("Encountered fatal error: body can never be empty");
                 }
                 if (body === "first") {
-                    setTimeout(() => {
-                        this.handleGetPeerIP().then((result) => {
-                        }, (err) => {
-                        });
-                    }, this.timeout)
+                    //setTimeout(() => {
+                    //     this.handleGetPeerIP().then((result) => {
+                    //     }, (err) => {
+                    //     });
+                    // }, this.timeout)
+                    this.peerIp = "first"
                 } else {
                     this.peerIp = body;
                 }
