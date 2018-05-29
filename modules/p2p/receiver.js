@@ -47,7 +47,6 @@ class Receiver {
                     }
 
                     this.PeerQueue.add({
-                        client: ioClient.connect('http://' + message + ':8080'),
                         ip: message
                     })
 
@@ -61,7 +60,6 @@ class Receiver {
                     let copy = new Queue(4, this.PeerQueue.clearSockets());
 
                     this.PeerQueue.add({
-                        client: ioClient.connect('http://' + message.ip + ':8080'),
                         ip: message.ip
                     })
 
@@ -97,7 +95,6 @@ class Receiver {
                 let queue = received.peers;
 
                 queue.data.forEach(peer => {
-                    peer.client = ioClient.connect('http://' + peer.ip + ':8080');
                     this.PeerQueue.add(peer)
                 });
 
@@ -113,10 +110,7 @@ class Receiver {
                 let queue = received.peers;
                 console.log("RECEIVED HELP RESPONSE WITH DATA: " + queue)
                 queue.data.forEach(peer => {
-                    if (peer.ip !== new InitialConnector().MyIP()) {
-                        peer.client = ioClient.connect('http://' + peer.ip + ':8080');
-                        this.PeerQueue.add(peer)
-                    }
+                    this.PeerQueue.add(peer)
                 });
             })
 

@@ -1,6 +1,7 @@
 // This class mimics a FIFO collection in javascript
 
 const InitialConnector = require('../initialconnector.js')
+const ioClient = require('socket.io-client')
 
 module.exports = class Queue {
     constructor(length, data) {
@@ -15,7 +16,10 @@ module.exports = class Queue {
     }
 
     add(record) {
-        if (record.ip && !record.ip !== new InitialConnector().MyIP() && !this.contains(record.ip)) {
+        if (record.ip && record.ip !== new InitialConnector().MyIP() && !this.contains(record.ip)) {
+            if (record.client === undefined) {
+                record.client = ioClient.connect('http://' + record.ip + ':8080')
+            }
             this.data.unshift(record);
             if (this.data.length > this.max) {
                 this.remove();
@@ -65,7 +69,7 @@ module.exports = class Queue {
     }
 
     clearSockets() {
-        let newArray = this.data.map(element => { 
+        let newArray = this.data.map(element => {
             let newElement = {};
             newElement.ip = element.ip;
             return newElement
