@@ -9,7 +9,9 @@ module.exports = class Queue {
         this.data = [];
         if (data !== undefined && data !== null) {
             data.forEach(element => {
-                this.add(element)
+                if (element.ip && element.ip !== new InitialConnector().MyIP() && !this.contains(element.ip)) {
+                    this.data.unshift(element)
+                }
             });
         }
         this.next = 0;
