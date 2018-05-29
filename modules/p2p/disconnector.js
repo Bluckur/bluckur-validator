@@ -45,7 +45,6 @@ module.exports = class Disconnector {
             });
             this.server.ourSockets = [];
             this.peer.startInitialConnector();
-            console.log("Started initialconnector")
         }
     }
 

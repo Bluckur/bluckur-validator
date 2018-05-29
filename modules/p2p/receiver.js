@@ -18,7 +18,7 @@ class Receiver {
         this.sender = sender;
     }
 
-    addReceiveImplementation(messageType, implementation){
+    addReceiveImplementation(messageType, implementation) {
         this.receiveHandlers.set(messageType, implementation);
     }
 
@@ -26,24 +26,27 @@ class Receiver {
         if (this.server) {
             // event fired every time a new client connects:
             this.server.on('connection', (socket) => {
-                this.disconnector.handleServerDisconnection(socket);
 
-                if(this.server.ourSockets === undefined){
-                    this.server.ourSockets = [];
-                }
+               
 
-                this.server.ourSockets.push(socket);
-                
                 socket.on('message_isAlive', (message) => {
                     socket.emit("message_isAlive", "Yes, I am online")
                 })
                 socket.on('new_connection', (message) => {
+                    if (this.server.ourSockets === undefined) {
+                        this.server.ourSockets = [];
+                    }
+    
+                    this.server.ourSockets.push(socket);
+
+                    this.disconnector.handleServerDisconnection(socket);
+                    
                     new InitialConnector().sleeping = false // This is needed to stop the sleeping of the peer if he was first
                     let copy = new Queue(4, this.PeerQueue.clearSockets());
                     if (this.PeerQueue.isFull()) {
                         copy.flip()
                     }
-                    
+
                     this.PeerQueue.add({
                         client: ioClient.connect('http://' + message + ':8080'),
                         ip: message
@@ -57,7 +60,7 @@ class Receiver {
                 socket.on('help_request', (message) => {
                     let copy = new Queue(4, this.PeerQueue.clearSockets());
 
-                    if(!this.PeerQueue.contains(message.ip)){
+                    if (!this.PeerQueue.contains(message.ip)) {
                         this.PeerQueue.add({
                             client: ioClient.connect('http://' + message.ip + ':8080'),
                             ip: message.ip
@@ -70,18 +73,18 @@ class Receiver {
                 })
 
                 socket.on('message', (message) => {
-                    if(this.receivedMessages.filter(m => message.id === m.id).length === 0) {
+                    if (this.receivedMessages.filter(m => message.id === m.id).length === 0) {
                         this.receivedMessages.push(message);
                         this.sender.sendMessageToAll(message);
 
                         var implementation = this.receiveHandlers.get(message.type);
-                        if(implementation !== undefined && typeof implementation === 'function'){
+                        if (implementation !== undefined && typeof implementation === 'function') {
                             implementation(message);
-                        }else{
+                        } else {
                             console.log("No implementation found for message with type: " + message.type);
                         }
                     }
-                   
+
                 })
             });
         }
@@ -101,7 +104,7 @@ class Receiver {
                     client: ioClient.connect('http://' + new InitialConnector().InitialPeerIP() + ':8080'),
                     ip: new InitialConnector().InitialPeerIP()
                 })
-                
+
                 this.sender.sendHelpRequest();
             })
 
