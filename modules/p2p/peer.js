@@ -61,6 +61,10 @@ module.exports = class Peer {
         this.testSend();
     }
 
+    testReceive(){
+        
+    }
+
     testSend(){
         setTimeout(() => {
             this.sendMessage("type", {
