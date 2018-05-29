@@ -81,13 +81,6 @@ module.exports = class Queue {
     }
 
     contains(ip) {
-        let contains
-        this.data.forEach(element => {
-            if (element.ip === ip) {
-                contains = true
-                break
-            }
-        });
-        return contains
+        return this.data.filter(element => element.ip === ip) !== undefined;
     }
 }
