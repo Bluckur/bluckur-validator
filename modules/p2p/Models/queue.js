@@ -23,7 +23,8 @@ module.exports = class Queue {
     }
 
     remove() {
-        this.data.pop();
+        let record = this.data.pop();
+        record.client.emit('disconnect')
     }
 
     first() {

@@ -48,12 +48,11 @@ class Receiver {
                     if (this.PeerQueue.isFull()) {
                         copy.flip()
                     }
-                    console.log(socket + " PLS DONT BE UNDEFINNED")
+                    
                     this.PeerQueue.add({
-                        client: socket,
+                        client: ioClient.connect('http://' + message + ':8080'),
                         ip: message
                     })
-
 
                     socket.emit('init_connections', {
                         peers: copy
