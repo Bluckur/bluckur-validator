@@ -39,7 +39,6 @@ module.exports = class Disconnector {
     }
 
     handleZeroQueueSize() {
-        console.log("HandleZeroQueueSize started")
         if (new InitialConnector().finishedOnce && !(new InitialConnector().sleeping)) {
             this.server.ourSockets.forEach(element => {
                 element.disconnect();
