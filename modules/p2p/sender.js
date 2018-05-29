@@ -31,8 +31,8 @@ class Sender {
     }
 
     sendHelpRequest(disconnected) {
+        var self = this;
         if (self.PeerQueue.size() < 3) {
-            var self = this;
             if (!this.helpRequesterStarted) {
                 this.helpRequesterStarted = true;
                 setTimeout(() => {
