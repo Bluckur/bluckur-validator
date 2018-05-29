@@ -77,10 +77,10 @@ class Receiver {
                 })
 
                 socket.on('message', (message) => {
-                    if (!this.receivedMessages.includes(message)) {
+                    if(this.receivedMessages.filter(m => message.id === m.id).length === 0) {
                         this.receivedMessages.push(message);
                         this.sender.sendMessageToAll(message);
-                        
+
                         var implementation = this.receiveHandlers.get(message.type);
                         if(implementation !== undefined){
                             implementation(message);
