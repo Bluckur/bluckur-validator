@@ -63,13 +63,20 @@ function initNode() {
   connected = true;
   console.log('Validator listening on port %s', PORT);
 
-  Security.generateKeyPair(Security.generateMnemonic()).then((keyPair) => {
+  // Security.generateKeyPair(Security.generateMnemonic()).then((keyPair) => {
+  //   console.log(keyPair);
+  // });
+
+  const pubKey = '75821586eeee3dc40f7ef83df809c9a38de017ed3adaed8130becd267f5eeffb';
+  const privKey = '050004040300010000000000000400070006000403070900010000000504000075821586eeee3dc40f7ef83df809c9a38de017ed3adaed8130becd267f5eeffb';
+  const validator = Validator.createInstance();
+  validator.initBlockchainAsync().then(() => {
     const transaction = Models.createTransactionInstance({
-      recipient: keyPair.pubKey,
-      amount: 0,
+      recipient: pubKey,
+      amount: 1,
       timestamp: +new Date(),
       type: 'coin',
-      sender: keyPair.pubKey,
+      sender: privKey,
     });
     Security.signDetached({
       recipient: transaction.recipient,
@@ -77,12 +84,14 @@ function initNode() {
       timestamp: transaction.timestamp,
       type: transaction.type,
       sender: transaction.sender,
-    }, keyPair.privKey).then((signature) => {
+    }, privKey).then((signature) => {
       transaction.signature = signature;
-      Validator.createInstance().addTransaction(transaction);
+      validator.addTransactionAsync(transaction);
     }).catch((err) => {
       console.log(err);
     });
+  }).catch((err) => {
+    console.log(err);
   });
 }
 
