@@ -106,8 +106,8 @@ module.exports = class InitialConnector {
                 } else {
                     this.peerIp = body;
                     this.finishedOnce = true;
-                    resolve(this.peerIp);
                 }
+                resolve(this.peerIp);
             });
         })
     }
