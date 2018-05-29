@@ -1,5 +1,5 @@
 // Hier moet server en client zooi in gebeuren (het ontvangen en verzenden dus) eventueel kan hier ook de peer/sessie lijst bijgehouden worden.
-
+const InitialConnector = require('./initialconnector');
 /**
  * Default message
  */
@@ -19,31 +19,36 @@ module.exports = class Disconnector {
         this.peer = peer;
     }
 
-    handleServerDisconnection(socket){
+    handleServerDisconnection(socket) {
         socket.on('disconnect', () => {
-                    
+            if (this.server.ourSockets.includes(socket)) {
+                var index = this.server.ourSockets.indexOf(socket);
+                if (index > -1) {
+                    this.server.ourSockets.splice(index, 1);
+                }
+            }
+
             this.PeerQueue.delete(socket);
-            if (this.PeerQueue.size() < 3)
-            {
-                //shout
+            if (this.PeerQueue.size() === 0) {
+                this.handleZeroQueueSize();
+            } else if (this.PeerQueue.size() < 3) {
                 this.handleTooLittleConnections(socket);
             }
-            if (this.PeerQueue.size() === 0)
-            {
-               this.handleZeroQueueSize();
-            } 
+
         });
     }
 
-    handleZeroQueueSize(){
-        this.server.clients().forEach(element => {
-            element.destroy();
-        });
-        this.server.close();
-        this.peer.initiate();
+    handleZeroQueueSize() {
+        if (!(new InitialConnector().sleeping)) {
+            this.server.ourSockets.forEach(element => {
+                element.destroy();
+            });
+            this.server.close();
+            this.peer.initiate();
+        }
     }
 
-    handleTooLittleConnections(socket){
+    handleTooLittleConnections(socket) {
         var address = socket.handshake.address;
         console.log('Disconnection from ' + address.address + ':' + address.port);
         this.sender.sendHelpRequest(address.address);

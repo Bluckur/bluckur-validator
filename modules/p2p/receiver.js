@@ -28,6 +28,12 @@ class Receiver {
             this.server.on('connection', (socket) => {
                 this.disconnector.handleServerDisconnection(socket);
 
+                if(this.server.ourSockets === undefined){
+                    this.server.ourSockets = [];
+                }
+
+                this.server.ourSockets.push(socket);
+                
                 socket.on('message_isAlive', (message) => {
                     socket.emit("message_isAlive", "Yes, I am online")
                 })

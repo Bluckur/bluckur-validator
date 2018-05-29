@@ -34,7 +34,7 @@ module.exports = class Peer {
         return instance;
     }
 
-    initate() {
+    initiate() {
         this.port = 8080;
         this.server = ioServer.listen(this.port);
         this.sender = new Sender(this.server, this.receiver, this.PeerQueue);
