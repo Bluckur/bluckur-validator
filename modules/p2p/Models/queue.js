@@ -65,9 +65,12 @@ module.exports = class Queue {
     }
 
     clearSockets() {
-        return this.data.map(element => {
-            ip: element.ip;
+        let newArray = this.data.map(element => { 
+            let newElement = {};
+            newElement.ip = element.ip;
+            return newElement
         });
+        return newArray
     }
 
     copy() {

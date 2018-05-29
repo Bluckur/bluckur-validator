@@ -45,12 +45,12 @@ module.exports = class Disconnector {
             });
             this.server.ourSockets = [];
             this.peer.startInitialConnector();
-            // console.log("Started initialconnector")
+            console.log("Started initialconnector")
         }
     }
 
     handleTooLittleConnections(socket) {
-        // console.log("started handleTooLittleConnections")
+        console.log("started handleTooLittleConnections")
         let address = socket.handshake.address;
         let ip = address.substring(address.lastIndexOf(":") + 1)
         this.sender.sendHelpRequest(ip);
