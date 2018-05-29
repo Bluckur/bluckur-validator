@@ -30,12 +30,12 @@ class Receiver {
                 socket.on('message_isAlive', (message) => {
                     socket.emit("message_isAlive", "Yes, I am online")
                 })
-                
+
                 socket.on('new_connection', (message) => {
                     if (this.server.ourSockets === undefined) {
                         this.server.ourSockets = [];
                     }
-    
+
                     this.server.ourSockets.push(socket);
 
                     this.disconnector.addServerDisconnectionHandler(socket);
@@ -65,7 +65,6 @@ class Receiver {
                             ip: message.ip
                         })
                     }
-
                     socket.emit('help_response', {
                         peers: copy
                     })
@@ -113,8 +112,10 @@ class Receiver {
             client.on('help_response', (received) => {
                 let queue = received.peers;
                 queue.data.forEach(peer => {
-                    peer.client = ioClient.connect('http://' + peer.ip + ':8080');
-                    this.PeerQueue.add(peer)
+                    if (peer.ip !== new InitialConnector().MyIP()) {
+                        peer.client = ioClient.connect('http://' + peer.ip + ':8080');
+                        this.PeerQueue.add(peer)
+                    }
                 });
             })
 
