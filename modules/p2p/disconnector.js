@@ -53,8 +53,7 @@ module.exports = class Disconnector {
 
     handleTooLittleConnections(socket) {
         let address = socket.handshake.address;
-        let ip = address.substring(address.lastIndexOf(":"))
-        console.log('Disconnection from ' + ip);
+        let ip = address.substring(address.lastIndexOf(":") + 1)
         this.sender.sendHelpRequest(ip);
     }
 }
