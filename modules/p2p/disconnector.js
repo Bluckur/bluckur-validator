@@ -44,16 +44,13 @@ module.exports = class Disconnector {
                 element.disconnect();
             });
             this.server.ourSockets = [];
-            // this.server.close();
-            // setTimeout(() => {
-            //     this.peer.initiate();
-            // }, 5000)
             this.peer.startInitialConnector();
+            console.log("Started initialconnector")
         }
     }
 
     handleTooLittleConnections(socket) {
-
+        console.log("started handleTooLittleConnections")
         let address = socket.handshake.address;
         let ip = address.substring(address.lastIndexOf(":") + 1)
         this.sender.sendHelpRequest(ip);

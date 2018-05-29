@@ -46,7 +46,7 @@ class Sender {
                     }
 
                     let currentClient = self.PeerQueue.getNext();
-
+                    console.log("Send help request to " + currentClient)
                     currentClient.emit("help_request", toSend);
                     self.sendHelpRequest(disconnected)
 

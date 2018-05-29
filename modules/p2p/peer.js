@@ -45,6 +45,7 @@ module.exports = class Peer {
 
         this.addMessageHandler("type", (message) => {
             console.log(message);
+            console.log(this.PeerQueue.data)
         })
 
         this.startInitialConnector();
@@ -71,7 +72,7 @@ module.exports = class Peer {
                 content: "hihi"
             })
             this.testSend();
-        }, 2000);
+        }, 5000);
     }
 
     waitTillConnection() {
