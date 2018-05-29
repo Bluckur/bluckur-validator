@@ -35,26 +35,28 @@ class Sender {
     }
 
     sendHelpRequest(disconnected) {
-        var self = this;
-        if (self.PeerQueue.size() < 3) {
-            if (!this.helpRequesterStarted) {
-                this.helpRequesterStarted = true;
-                setTimeout(() => {
-                    let toSend = {
-                        disconnected: disconnected,
-                        ip: new InitialConnector().MyIP()
-                    }
-
-                    let currentClient = self.PeerQueue.getNext();
-                    console.log("Send help request to " + currentClient)
-                    currentClient.emit("help_request", toSend);
-                    self.sendHelpRequest(disconnected)
-
-                }, 5000)
+        setTimeout( () => {
+            var self = this;
+            if (self.PeerQueue.size() < 3) {
+                if (!this.helpRequesterStarted) {
+                    this.helpRequesterStarted = true;
+                    setTimeout(() => {
+                        let toSend = {
+                            disconnected: disconnected,
+                            ip: new InitialConnector().MyIP()
+                        }
+    
+                        let currentClient = self.PeerQueue.getNext();
+                        currentClient.emit("help_request", toSend);
+                        self.sendHelpRequest(disconnected)
+    
+                    }, 5000)
+                }
+            } else {
+                self.helpRequesterStarted = false;
             }
-        } else {
-            self.helpRequesterStarted = false;
-        }
+        }, 10000)
+       
     }
 
     sendMessageToAll(message) {
