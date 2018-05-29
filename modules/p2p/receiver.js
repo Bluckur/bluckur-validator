@@ -80,13 +80,15 @@ class Receiver {
                     if (!this.receivedMessages.includes(message)) {
                         this.receivedMessages.push(message);
                         this.sender.sendMessageToAll(message);
+                        
+                        var implementation = this.receiveHandlers.get(message.type);
+                        if(implementation !== undefined){
+                            implementation(message);
+                        }else{
+                            console.log("No implementation found for message with type: " + message.type);
+                        }
                     }
-                    var implementation = this.receiveHandlers.get(message.type);
-                    if(implementation !== undefined){
-                        implementation(message);
-                    }else{
-                        console.log("No implementation found for message with type: " + message.type);
-                    }
+                   
                 })
             });
         }
