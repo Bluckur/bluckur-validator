@@ -83,6 +83,7 @@ class Receiver {
 
                         var implementation = this.receiveHandlers.get(message.type);
                         if(implementation !== undefined){
+                            console.log("Received and handling message: " + message)
                             implementation(message);
                         }else{
                             console.log("No implementation found for message with type: " + message.type);

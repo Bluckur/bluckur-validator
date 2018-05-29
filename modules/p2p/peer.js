@@ -58,12 +58,17 @@ module.exports = class Peer {
             // console.log(err);
         })
 
-        // setTimeout(() => {
-        //     this.sendMessage("type", {
-        //         content: "hihi"
-        //     })
-        // }, 2000);
+        this.testSend();
     }
+
+    // testSend(){
+    //     setTimeout(() => {
+    //         this.sendMessage("type", {
+    //             content: "hihi"
+    //         })
+    //         this.testSend();
+    //     }, 2000); 
+    // }
 
     waitTillConnection() {
         if (new InitialConnector().sleeping) {
