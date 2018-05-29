@@ -34,20 +34,19 @@ class Sender {
         client.emit("new_connection", myIp)
     }
 
-    sendHelpRequest(disconnected) {
+    sendHelpRequest() {
         var self = this;
         if (self.PeerQueue.size() < 3) {
             if (!this.helpRequesterStarted) {
                 this.helpRequesterStarted = true;
                 setTimeout(() => {
                     let toSend = {
-                        disconnected: disconnected,
                         ip: new InitialConnector().MyIP()
                     }
 
                     let currentClient = self.PeerQueue.getNext();
                     currentClient.emit("help_request", toSend);
-                    self.sendHelpRequest(disconnected)
+                    self.sendHelpRequest()
 
                 }, 5000)
             }

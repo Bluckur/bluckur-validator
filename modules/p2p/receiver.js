@@ -57,14 +57,14 @@ class Receiver {
 
                 })
                 socket.on('help_request', (message) => {
+                    console.log("RECEIVED HELP REQUEST FROM: " + message.ip)
                     let copy = new Queue(4, this.PeerQueue.clearSockets());
 
-                    if (!this.PeerQueue.contains(message.ip)) {
-                        this.PeerQueue.add({
-                            client: ioClient.connect('http://' + message.ip + ':8080'),
-                            ip: message.ip
-                        })
-                    }
+                    this.PeerQueue.add({
+                        client: ioClient.connect('http://' + message.ip + ':8080'),
+                        ip: message.ip
+                    })
+
                     socket.emit('help_response', {
                         peers: copy
                     })
@@ -111,6 +111,7 @@ class Receiver {
 
             client.on('help_response', (received) => {
                 let queue = received.peers;
+                console.log("RECEIVED HELP RESPONSE WITH DATA: " + queue)
                 queue.data.forEach(peer => {
                     if (peer.ip !== new InitialConnector().MyIP()) {
                         peer.client = ioClient.connect('http://' + peer.ip + ':8080');
