@@ -1,7 +1,3 @@
-import {
-    connect
-} from 'net';
-
 // Hier moet server en client zooi in gebeuren (het ontvangen en verzenden dus) eventueel kan hier ook de peer/sessie lijst bijgehouden worden.
 
 'use strict';
@@ -38,10 +34,11 @@ module.exports = class Peer {
 
     initate() {
         this.port = 8080;
-        // this.client = ioClient.connect('http://localhost:' + this.port);
+        this.client = ioClient.connect('http://localhost:' + this.port);
         this.server = ioServer.listen(this.port);
         this.receiver = new Receiver(this.server, this.PeerQueue);
         this.sender = new Sender(this.server, this.receiver, this.PeerQueue);
+        this.receiver.setSender(this.sender);
 
         var initalconnector = new InitialConnector(2000); //Check every 2 secs for other peer when you are first peer.
         initalconnector.initiate().then((result) => {
@@ -79,5 +76,26 @@ module.exports = class Peer {
                 ip: ip
             })
         }
+    }
+
+    guid() {
+        return this.s4() + this.s4() + '-' + this.s4() + '-' + this.s4() + '-' +
+          this.s4() + '-' + this.s4() + this.s4() + this.s4();
+      }
+      
+    s4() {
+        return Math.floor((1 + Math.random()) * 0x10000)
+          .toString(16)
+          .substring(1);
+    }
+
+    sendMessage(messageType, message){
+        message.type = messageType;
+        message.id = this.guid();
+        this.sender.sendMessageToAll(message);
+    }
+
+    addMessageHandler(messageType, implementation){
+        this.receiver.addReceiveImplementation(messageType, implementation);
     }
 }

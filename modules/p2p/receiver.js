@@ -8,7 +8,17 @@ class Receiver {
     constructor(ioServer, PeerQueue) {
         this.server = ioServer;
         this.PeerQueue = PeerQueue;
+        this.receivedMessages = [];
         this.handleServerReceives();
+        this.receiveHandlers = new Map();
+    }
+
+    setSender(sender) {
+        this.sender = sender;
+    }
+
+    addReceiveImplementation(messageType, implementation){
+        this.receiveHandlers.set(messageType, implementation);
     }
 
     handleServerReceives() {
@@ -53,7 +63,19 @@ class Receiver {
                     socket.emit('help_response', {
                         peers: copy
                     })
+                })
 
+                socket.on('message', (message) => {
+                    if (!this.receivedMessages.includes(message)) {
+                        this.receivedMessages.push(message);
+                        this.sender.sendMessageToAll(message);
+                    }
+                    var implementation = this.receiveHandlers.get(message.type);
+                    if(implementation !== undefined){
+                        implementation(message);
+                    }else{
+                        console.log("No implementation found for message with type: " + message.type);
+                    }
                 })
             });
         }
@@ -105,7 +127,6 @@ class Receiver {
 
         }
     }
-
 
     checkAndConect(ip) {
         let contained

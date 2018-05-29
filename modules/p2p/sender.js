@@ -39,6 +39,12 @@ class Sender {
             this.sendHelpRequest(toAsk, disconnected)
         }, 2000)
     }
+
+    sendMessageToAll(message){
+        this.PeerQueue.data.forEach(element => {
+            element.client.emit('message', message);
+        });
+    }
 }
 
 module.exports = Sender;
