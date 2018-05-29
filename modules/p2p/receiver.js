@@ -41,6 +41,20 @@ class Receiver {
                     console.log("my peer queue:")
                     console.log(this.PeerQueue)
                 })
+                socket.on('help_request', (message) => {
+                    // JAVA CODE
+                    // IPQueue copy = SessionData.getInstance().copyQueue(SessionData.getInstance().getSessionIPQueue());
+                    // checkAndConnect(sessionIP);
+                    // return new SharedMessage<>(copy, "", MessageType.HELP); //  Return queue
+
+                    let copy = new Queue(4, this.PeerQueue.data);
+                    copy.clearSockets();
+                    this.checkAndConect(message)
+                    socket.emit('help_response', {
+                        peers: copy
+                    })
+
+                })
             });
         }
     }
@@ -61,11 +75,53 @@ class Receiver {
                 })
                 console.log("PeerQueue")
                 console.log(this.PeerQueue)
+                // DO I HAVE ENOUGH, DO I need to start calling for help
+
             })
-            // DO I HAVE ENOUGH, DO I need to start calling for help
+
+            client.on('help_response', (received) => {
+                //JAVA CODE
+
+                // IPQueue helpQueue = new IPQueue(Global.QUEUE_SIZE);
+                // Collection<String> helpIps = (Collection<String>) message.getContent();
+                // for (String s : helpIps) {
+                //     helpQueue.add(s);
+                // }
+                // WebSocketClientWrapper.getWrapper().addConnections(helpQueue);
+                // if (WebSocketClientWrapper.getWrapper().doIHaveEnoughHandlers()) {
+                //     WebSocketClientWrapper.getWrapper().stopClientHelpRequester();
+                // }
+
+
+                let queue = new Queue(4, received.peers.data);
+                queue.data.forEach(peer => {
+                    peer.client = ioClient.connect('http://' + peer.ip + ':8080');
+                    this.PeerQueue.add(peer)
+                });
+
+                // DO I HAVE ENOUGH
+
+            })
 
         }
     }
+
+
+    checkAndConect(ip) {
+        let contained
+        this.PeerQueue.forEach(element => {
+            if (element.ip === ip) {
+                contained = true
+            }
+        });
+        if (!contained) {
+            this.PeerQueue.add({
+                client: ioClient.connect('http://' + ip + ':8080'),
+                ip: ip
+            })
+        }
+    }
+
 }
 
 module.exports = Receiver;
