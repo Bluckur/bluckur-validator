@@ -13,13 +13,13 @@ module.exports = class InitialConnector {
      */
 
     constructor(firstTimeout) {
-        // this.ip = "http://145.93.137.20:8082";
         if (!instance) {
             this.ip = "http://145.93.112.207:8082";
             this.myIp = undefined;
             this.peerIp = undefined;
             this.timeout = firstTimeout;
-            this.sleeping = false
+            this.sleeping = false;
+            this.finishedOnce = false;
             instance = this;
         }
         return instance;
@@ -105,8 +105,9 @@ module.exports = class InitialConnector {
                     reject("Encountered fatal error: body can never be empty");
                 } else {
                     this.peerIp = body;
+                    this.finishedOnce = true;
+                    resolve(this.peerIp);
                 }
-                resolve(this.peerIp);
             });
         })
     }
