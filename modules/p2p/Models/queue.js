@@ -46,7 +46,7 @@ module.exports = class Queue {
 
     delete(socket) {
         let value = null;
-        for (i = 0; i < this.data.length; i++) {
+        for (var i = 0; i < this.data.length; i++) {
             if (this.data[i].client === record) {
                 value = i;
                 break;
