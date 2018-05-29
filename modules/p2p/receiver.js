@@ -92,6 +92,7 @@ class Receiver {
             client.on('init_connections', (received) => {
                 let queue = new Queue(4, received.peers.data);
 
+                console.log("Init-Connections: "  + queue.data)
                 queue.data.forEach(peer => {
                     peer.client = ioClient.connect('http://' + peer.ip + ':8080');
                     this.PeerQueue.add(peer)
@@ -107,6 +108,7 @@ class Receiver {
 
             client.on('help_response', (received) => {
                 let queue = new Queue(4, received.peers.data);
+                console.log("help_response: " + queue)
                 queue.data.forEach(peer => {
                     peer.client = ioClient.connect('http://' + peer.ip + ':8080');
                     this.PeerQueue.add(peer)

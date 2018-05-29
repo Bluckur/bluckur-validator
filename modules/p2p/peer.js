@@ -84,22 +84,6 @@ module.exports = class Peer {
         }
     }
 
-
-    checkAndConect(ip) {
-        let contained
-        this.PeerQueue.forEach(element => {
-            if (element.ip === ip) {
-                contained = true
-            }
-        });
-        if (!contained) {
-            this.PeerQueue.add({
-                client: ioClient.connect('http://' + ip + ':8080'),
-                ip: ip
-            })
-        }
-    }
-
     sendMessage(messageType, message) {
         message.type = messageType;
         message.id = uuid();

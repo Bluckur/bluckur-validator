@@ -86,11 +86,11 @@ module.exports = class Queue {
         return this.data.filter(element => element.ip === ip).length > 0;
     }
 
-    getNext(){
+    getNext() {
         let returnThis = this.data[this.next].client;
         this.next++;
 
-        if(this.next >= this.size()){
+        if (this.next >= this.size()) {
             this.next = 0;
         }
 
