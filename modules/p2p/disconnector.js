@@ -39,19 +39,22 @@ module.exports = class Disconnector {
     }
 
     handleZeroQueueSize() {
+        console.log("HandleZeroQueueSize started")
         if (new InitialConnector().finishedOnce && !(new InitialConnector().sleeping)) {
             this.server.ourSockets.forEach(element => {
                 element.disconnect();
             });
             this.server.ourSockets = [];
-            this.server.close();
-            setTimeout(() => {
-                this.peer.initiate();
-            }, 5000)
+            // this.server.close();
+            // setTimeout(() => {
+            //     this.peer.initiate();
+            // }, 5000)
+            this.peer.startInitialConnector();
         }
     }
 
     handleTooLittleConnections(socket) {
+
         let address = socket.handshake.address;
         let ip = address.substring(address.lastIndexOf(":") + 1)
         this.sender.sendHelpRequest(ip);

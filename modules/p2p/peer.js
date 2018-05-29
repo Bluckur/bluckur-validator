@@ -47,6 +47,11 @@ module.exports = class Peer {
             console.log(message);
         })
 
+        this.startInitialConnector();
+        this.testSend();
+    }
+
+    startInitialConnector(){
         var initalconnector = new InitialConnector(2000); //Check every 2 secs for other peer when you are first peer.
         initalconnector.initiate().then((result) => {
             if (result.peerIp === "first") {
@@ -58,8 +63,6 @@ module.exports = class Peer {
         }, (err) => {
             // console.log(err);
         })
-
-        this.testSend();
     }
 
     testSend() {
