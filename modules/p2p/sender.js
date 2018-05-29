@@ -40,7 +40,7 @@ class Sender {
             if (!this.helpRequesterStarted) {
                 this.helpRequesterStarted = true;
                 setTimeout(() => {
-                    toSend = {
+                    let toSend = {
                         disconnected: disconnected,
                         ip: new InitialConnector().MyIP()
                     }
