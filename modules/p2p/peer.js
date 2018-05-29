@@ -57,6 +57,12 @@ module.exports = class Peer {
         }, (err) => {
             // console.log(err);
         })
+
+        // setTimeout(() => {
+        //     this.sendMessage("type", {
+        //         content: "hihi"
+        //     })
+        // }, 2000);
     }
 
     waitTillConnection() {
@@ -65,12 +71,6 @@ module.exports = class Peer {
                 console.log("Waiting for first connection...")
                 this.waitTillConnection()
             }, 2000)
-        }else{
-            setTimeout(() => {
-                this.sendMessage("type", {
-                    content: "hihi"
-                })
-            }, 2000);
         }
     }
 
