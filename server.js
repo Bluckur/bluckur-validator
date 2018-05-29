@@ -71,27 +71,27 @@ function initNode() {
   const privKey = '050004040300010000000000000400070006000403070900010000000504000075821586eeee3dc40f7ef83df809c9a38de017ed3adaed8130becd267f5eeffb';
   const validator = Validator.createInstance();
   validator.initBlockchainAsync().then(() => {
-    const transaction = Models.createTransactionInstance({
-      recipient: pubKey,
-      amount: 1,
-      timestamp: +new Date(),
-      type: 'coin',
-      sender: privKey,
-    });
-    Security.signDetached({
-      recipient: transaction.recipient,
-      amount: transaction.amount,
-      timestamp: transaction.timestamp,
-      type: transaction.type,
-      sender: transaction.sender,
-    }, privKey).then((signature) => {
-      transaction.signature = signature;
-      validator.addTransactionAsync(transaction);
-    }).catch((err) => {
-      console.log(err);
-    });
-  }).catch((err) => {
-    console.log(err);
+  //   const transaction = Models.createTransactionInstance({
+  //     recipient: pubKey,
+  //     amount: 1,
+  //     timestamp: +new Date(),
+  //     type: 'coin',
+  //     sender: privKey,
+  //   });
+  //   Security.signDetached({
+  //     recipient: transaction.recipient,
+  //     amount: transaction.amount,
+  //     timestamp: transaction.timestamp,
+  //     type: transaction.type,
+  //     sender: transaction.sender,
+  //   }, privKey).then((signature) => {
+  //     transaction.signature = signature;
+  //     validator.addTransactionAsync(transaction);
+  //   }).catch((err) => {
+  //     console.log(err);
+  //   });
+  // }).catch((err) => {
+  //   console.log(err);
   });
 }
 
