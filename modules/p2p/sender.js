@@ -45,7 +45,7 @@ class Sender {
                         ip: new InitialConnector().MyIP()
                     }
 
-                    currentClient = self.PeerQueue.getNext();
+                    let currentClient = self.PeerQueue.getNext();
 
                     currentClient.emit("help_request", toSend);
                     self.sendHelpRequest(disconnected)
