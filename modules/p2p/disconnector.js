@@ -39,12 +39,15 @@ module.exports = class Disconnector {
     }
 
     handleZeroQueueSize() {
-        if (new InitialConnector().finishedOnce) {
+        if (new InitialConnector().finishedOnce && !(new InitialConnector().sleeping)) {
             this.server.ourSockets.forEach(element => {
                 element.disconnect();
             });
+            this.server.ourSockets = [];
             this.server.close();
-            this.peer.initiate();
+            setTimeout(() => {
+                this.peer.initiate();
+            }, 5000)
         }
     }
 

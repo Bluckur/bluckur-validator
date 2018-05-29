@@ -28,6 +28,7 @@ module.exports = class Peer {
         if (!instance) {
             instance = this;
             this.PeerQueue = new Queue(4);
+            this.port = 8080;
             new InitialConnector().sleeping = false;
         }
 
@@ -35,7 +36,6 @@ module.exports = class Peer {
     }
 
     initiate() {
-        this.port = 8080;
         this.server = ioServer.listen(this.port);
         this.sender = new Sender(this.server, this.receiver, this.PeerQueue);
         this.disconnector = new Disconnector(this.sender, this.server, this.PeerQueue, this);
@@ -61,17 +61,13 @@ module.exports = class Peer {
         this.testSend();
     }
 
-    testReceive(){
-
-    }
-
-    testSend(){
+    testSend() {
         setTimeout(() => {
             this.sendMessage("type", {
                 content: "hihi"
             })
             this.testSend();
-        }, 2000); 
+        }, 2000);
     }
 
     waitTillConnection() {
