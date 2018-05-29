@@ -56,10 +56,10 @@ module.exports = class Peer {
 
     waitTillConnection() {
         if (new InitialConnector().sleeping)
-            setTimeout(() => {
-                console.log("Waiting for first connection...")
-                this.waitTillConnection()
-            }, 2000)
+        setTimeout(() => {
+            console.log("Waiting for first connection...")
+            this.waitTillConnection()
+        }, 2000)
     }
 
 

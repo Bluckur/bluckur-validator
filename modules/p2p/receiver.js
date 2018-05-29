@@ -34,15 +34,16 @@ class Receiver {
                 })
                 socket.on('new_connection', (message) => {
                     new InitialConnector().sleeping = false // This is needed to stop the sleeping of the peer if he was first
-                    let copy = new Queue(4, this.PeerQueue.data);
-                    copy.clearSockets();
+                    let copy = new Queue(4, this.PeerQueue.clearSockets());
                     if (this.PeerQueue.isFull()) {
                         copy.flip()
                     }
+                    console.log(socket + " PLS DONT BE UNDEFINNED")
                     this.PeerQueue.add({
                         client: socket,
                         ip: message
                     })
+
 
                     socket.emit('init_connections', {
                         peers: copy
@@ -59,7 +60,7 @@ class Receiver {
 
                     let copy = new Queue(4, this.PeerQueue.data);
                     copy.clearSockets();
-                    this.checkAndConect(message)
+                    this.checkAndConect(message) 
                     socket.emit('help_response', {
                         peers: copy
                     })
