@@ -87,7 +87,7 @@ module.exports = class Queue {
     }
 
     getNext(){
-        let returnThis = this.data[this.next].ip;
+        let returnThis = this.data[this.next].client;
         this.next++;
 
         if(this.next >= this.size()){
