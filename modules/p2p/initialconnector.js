@@ -19,6 +19,7 @@ module.exports = class InitialConnector {
             this.myIp = undefined;
             this.peerIp = undefined;
             this.timeout = firstTimeout;
+            this.sleeping = false
             instance = this;
         }
         return instance;
@@ -58,8 +59,7 @@ module.exports = class InitialConnector {
         request(this.ip + path, function (error, response, body) {
             if (error != null || response.statusCode == 500) {
                 errorImpl(error);
-            }
-            else {
+            } else {
                 successImpl(response, body);
             }
         });
@@ -103,14 +103,6 @@ module.exports = class InitialConnector {
             }, (response, body) => {
                 if (body === "empty") {
                     reject("Encountered fatal error: body can never be empty");
-                }
-                if (body === "first") {
-                    //setTimeout(() => {
-                    //     this.handleGetPeerIP().then((result) => {
-                    //     }, (err) => {
-                    //     });
-                    // }, this.timeout)
-                    this.peerIp = "first"
                 } else {
                     this.peerIp = body;
                 }

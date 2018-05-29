@@ -28,6 +28,17 @@ class Sender {
         this.receiver.addClientReceives(client);
         client.emit("new_connection", myIp)
     }
+
+    sendHelpRequest(toAsk, disconnected) {
+        setTimeout(() => {
+            toSend = {
+                disconnected: disconnected, 
+                ip: new InitialConnector().MyIP()
+            }
+            toAsk.emit("help_request", myIp)
+            this.sendHelpRequest(toAsk, disconnected)
+        }, 2000)
+    }
 }
 
 module.exports = Sender;

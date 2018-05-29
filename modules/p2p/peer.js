@@ -1,3 +1,7 @@
+import {
+    connect
+} from 'net';
+
 // Hier moet server en client zooi in gebeuren (het ontvangen en verzenden dus) eventueel kan hier ook de peer/sessie lijst bijgehouden worden.
 
 'use strict';
@@ -41,13 +45,39 @@ module.exports = class Peer {
 
         var initalconnector = new InitialConnector(2000); //Check every 2 secs for other peer when you are first peer.
         initalconnector.initiate().then((result) => {
-            if (!result.peerIp === "first") {
+            console.log(result)
+            if (result.peerIp === "first") {
+                new InitialConnector().sleeping = true
+                this.waitTillConnection()
+            } else if (result.peerIp !== "first") {
                 this.sender.sendNewPeerRequest(result.myIp, result.peerIp);
-
             }
         }, (err) => {
             // console.log(err);
         })
     }
 
+    waitTillConnection() {
+        if (new InitialConnector().sleeping)
+            setTimeout(() => {
+                console.log("Waiting for first connection...")
+                this.waitTillConnection()
+            }, 2000)
+    }
+
+
+    checkAndConect(ip) {
+        let contained
+        this.PeerQueue.forEach(element => {
+            if (element.ip === ip) {
+                contained = true
+            }
+        });
+        if (!contained) {
+            this.PeerQueue.add({
+                client: ioClient.connect('http://' + ip + ':8080'),
+                ip: ip
+            })
+        }
+    }
 }
