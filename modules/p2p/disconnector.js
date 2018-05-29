@@ -19,7 +19,7 @@ module.exports = class Disconnector {
         this.peer = peer;
     }
 
-    handleServerDisconnection(socket) {
+    addServerDisconnectionHandler(socket) {
         socket.on('disconnect', () => {
             if (this.server.ourSockets.includes(socket)) {
                 var index = this.server.ourSockets.indexOf(socket);
@@ -29,13 +29,16 @@ module.exports = class Disconnector {
             }
 
             this.PeerQueue.delete(socket);
-            if (this.PeerQueue.size() === 0) {
-                this.handleZeroQueueSize();
-            } else if (this.PeerQueue.size() < 3) {
-                this.handleTooLittleConnections(socket);
-            }
-
+            this.checkQueue();
         });
+    }
+
+    checkQueue(socket) {
+        if (this.PeerQueue.size() === 0) {
+            this.handleZeroQueueSize();
+        } else if (this.PeerQueue.size() < 3) {
+            this.handleTooLittleConnections(socket);
+        }
     }
 
     handleZeroQueueSize() {

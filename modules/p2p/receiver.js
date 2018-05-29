@@ -27,11 +27,10 @@ class Receiver {
             // event fired every time a new client connects:
             this.server.on('connection', (socket) => {
 
-               
-
                 socket.on('message_isAlive', (message) => {
                     socket.emit("message_isAlive", "Yes, I am online")
                 })
+                
                 socket.on('new_connection', (message) => {
                     if (this.server.ourSockets === undefined) {
                         this.server.ourSockets = [];
@@ -39,8 +38,8 @@ class Receiver {
     
                     this.server.ourSockets.push(socket);
 
-                    this.disconnector.handleServerDisconnection(socket);
-                    
+                    this.disconnector.addServerDisconnectionHandler(socket);
+
                     new InitialConnector().sleeping = false // This is needed to stop the sleeping of the peer if he was first
                     let copy = new Queue(4, this.PeerQueue.clearSockets());
                     if (this.PeerQueue.isFull()) {
@@ -70,6 +69,8 @@ class Receiver {
                     socket.emit('help_response', {
                         peers: copy
                     })
+
+                    this.disconnector.checkQueue(socket);
                 })
 
                 socket.on('message', (message) => {
@@ -85,6 +86,7 @@ class Receiver {
                         }
                     }
 
+                    this.disconnector.checkQueue(socket);
                 })
             });
         }
