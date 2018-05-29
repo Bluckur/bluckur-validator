@@ -42,7 +42,7 @@ class Sender {
 
     sendMessageToAll(message){
         this.PeerQueue.data.forEach(element => {
-            message.senderip = new InitialConnector().MyIp();
+            message.senderip = new InitialConnector().MyIP();
             element.client.emit('message', message);
         });
     }
