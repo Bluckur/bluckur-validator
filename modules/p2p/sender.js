@@ -36,6 +36,7 @@ class Sender {
 
     sendHelpRequest() {
         var self = this;
+        console.log("Started help request. Current Queue size: " + self.PeerQueue.size())
         if (self.PeerQueue.size() < 3) {
             if (!this.helpRequesterStarted) {
                 this.helpRequesterStarted = true;
