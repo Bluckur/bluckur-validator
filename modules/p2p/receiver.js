@@ -82,7 +82,8 @@ class Receiver {
                         this.sender.sendMessageToAll(message);
 
                         var implementation = this.receiveHandlers.get(message.type);
-                        if(implementation !== undefined){
+                        console.log(implementation)
+                        if(implementation !== undefined && typeof implementation === 'function'){
                             console.log("Received and handling message: " + message)
                             implementation(message);
                         }else{
