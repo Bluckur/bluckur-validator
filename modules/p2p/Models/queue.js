@@ -14,7 +14,7 @@ module.exports = class Queue {
     }
 
     add(record) {
-       if (record.ip && !record.ip !== new InitialConnector().MyIP()) {
+        if (record.ip && !record.ip !== new InitialConnector().MyIP() && !this.contains(record.ip)) {
             this.data.unshift(record);
             if (this.data.length > this.max) {
                 this.remove();
@@ -49,9 +49,9 @@ module.exports = class Queue {
     }
 
     clearSockets() {
-       this.data.map(element => {
-            ip:element.ip;
-        }); 
+        this.data.map(element => {
+            ip: element.ip;
+        });
     }
 
     copy() {
@@ -64,5 +64,16 @@ module.exports = class Queue {
 
     isFull() {
         return this.max === this.size()
+    }
+
+    contains(ip) {
+        let contains
+        this.data.forEach(element => {
+            if (element.ip === ip) {
+                contains = true
+                break
+            }
+        });
+        return contains
     }
 }

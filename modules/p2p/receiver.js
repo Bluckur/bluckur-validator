@@ -48,11 +48,12 @@ class Receiver {
                     // checkAndConnect(sessionIP);
                     // return new SharedMessage<>(copy, "", MessageType.HELP); //  Return queue
 
-                    // let copy = new Queue(4, this.PeerQueue.data);
-                    // copy.clearSockets();
-                    // this.checkAndConect(message) socket.emit('help_response', {
-                    //     peers: copy
-                    // });
+                    let copy = new Queue(4, this.PeerQueue.data);
+                    copy.clearSockets();
+                    this.checkAndConect(message) 
+                    socket.emit('help_response', {
+                        peers: copy
+                    });
 
                 })
             });
