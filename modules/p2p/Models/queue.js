@@ -11,6 +11,7 @@ module.exports = class Queue {
                 this.add(element)
             });
         }
+        this.next = 0;
     }
 
     add(record) {
@@ -83,5 +84,16 @@ module.exports = class Queue {
 
     contains(ip) {
         return this.data.filter(element => element.ip === ip).length > 0;
+    }
+
+    getNext(){
+        let returnThis = this.data[this.next].ip;
+        this.next++;
+
+        if(this.next >= this.size()){
+            this.next = 0;
+        }
+
+        return returnThis;
     }
 }

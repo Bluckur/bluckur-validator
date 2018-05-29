@@ -8,6 +8,7 @@ const InitialConnector = require('./initialconnector.js')
 const Queue = require('./Models/queue.js')
 const Sender = require('./sender');
 const Receiver = require('./receiver');
+const Disconnector = require('./disconnector')
 const uuid = require('uuid/v1');
 
 /**
@@ -35,10 +36,10 @@ module.exports = class Peer {
 
     initate() {
         this.port = 8080;
-        this.client = ioClient.connect('http://localhost:' + this.port);
         this.server = ioServer.listen(this.port);
-        this.receiver = new Receiver(this.server, this.PeerQueue);
         this.sender = new Sender(this.server, this.receiver, this.PeerQueue);
+        this.disconnector = new Disconnector(this.sender, this.server, this.PeerQueue, this);
+        this.receiver = new Receiver(this.server, this.PeerQueue, this.disconnector);
         this.receiver.setSender(this.sender);
 
         this.addMessageHandler("type", (message) => {
@@ -47,7 +48,6 @@ module.exports = class Peer {
 
         var initalconnector = new InitialConnector(2000); //Check every 2 secs for other peer when you are first peer.
         initalconnector.initiate().then((result) => {
-            console.log(result)
             if (result.peerIp === "first") {
                 new InitialConnector().sleeping = true
                 this.waitTillConnection()
@@ -62,7 +62,7 @@ module.exports = class Peer {
     }
 
     testReceive(){
-        
+
     }
 
     testSend(){

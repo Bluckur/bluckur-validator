@@ -8,6 +8,7 @@ class Sender {
         this.server = ioServer;
         this.receiver = receiver;
         this.PeerQueue = PeerQueue;
+        this.helpRequesterStarted = false;
 
         //Example server send:
         //socket will come from the Queue
@@ -29,18 +30,30 @@ class Sender {
         client.emit("new_connection", myIp)
     }
 
-    sendHelpRequest(toAsk, disconnected) {
-        setTimeout(() => {
-            toSend = {
-                disconnected: disconnected, 
-                ip: new InitialConnector().MyIP()
+    sendHelpRequest(disconnected) {
+        if (self.PeerQueue.size() < 3) {
+            var self = this;
+            if (!this.helpRequesterStarted) {
+                this.helpRequesterStarted = true;
+                setTimeout(() => {
+                    toSend = {
+                        disconnected: disconnected,
+                        ip: new InitialConnector().MyIP()
+                    }
+
+                    currentClient = self.PeerQueue.getNext();
+
+                    currentClient.emit("help_request", toSend);
+                    self.sendHelpRequest(disconnected)
+
+                }, 5000)
             }
-            toAsk.emit("help_request", myIp)
-            this.sendHelpRequest(toAsk, disconnected)
-        }, 2000)
+        } else {
+            self.helpRequesterStarted = false;
+        }
     }
 
-    sendMessageToAll(message){
+    sendMessageToAll(message) {
         this.PeerQueue.data.forEach(element => {
             element.client.emit('message', message);
         });
