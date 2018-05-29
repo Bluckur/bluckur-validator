@@ -8,6 +8,7 @@ const InitialConnector = require('./initialconnector.js')
 const Queue = require('./Models/queue.js')
 const Sender = require('./sender');
 const Receiver = require('./receiver');
+const uuid = require('uuid/v1');
 
 /**
  * Default message
@@ -78,20 +79,9 @@ module.exports = class Peer {
         }
     }
 
-    guid() {
-        return this.s4() + this.s4() + '-' + this.s4() + '-' + this.s4() + '-' +
-          this.s4() + '-' + this.s4() + this.s4() + this.s4();
-      }
-      
-    s4() {
-        return Math.floor((1 + Math.random()) * 0x10000)
-          .toString(16)
-          .substring(1);
-    }
-
     sendMessage(messageType, message){
         message.type = messageType;
-        message.id = this.guid();
+        message.id = uuid();
         this.sender.sendMessageToAll(message);
     }
 
