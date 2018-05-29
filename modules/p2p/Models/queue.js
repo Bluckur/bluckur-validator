@@ -81,6 +81,6 @@ module.exports = class Queue {
     }
 
     contains(ip) {
-        return this.data.filter(element => element.ip === ip) !== undefined;
+        return this.data.filter(element => element.ip === ip).length > 0;
     }
 }
