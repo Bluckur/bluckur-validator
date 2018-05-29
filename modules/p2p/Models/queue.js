@@ -44,6 +44,22 @@ module.exports = class Queue {
         return this.data.length;
     }
 
+    delete(socket){
+        dlenght = this.data.length;
+        var value = null;
+        for (i=0; i < dlenght; i++){
+            if (this.data[i].client === record)
+            {
+                value = i;
+                
+            }
+        }
+        if (value != null){
+        this.data.remove[value];
+        }
+    }
+
+
     flip() {
         this.data.reverse();
     }

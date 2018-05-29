@@ -26,6 +26,16 @@ class Receiver {
             // event fired every time a new client connects:
             this.server.on('connection', (socket) => {
                 socket.on('disconnect', () => {
+
+                    this.PeerQueue.delete(socket);
+                    if (this.PeerQueue.size < 3)
+                    {
+                     
+                    }
+                    if (this.PeerQueue.size === 0)
+                    {
+                    
+                    } 
                     //ToDo: Do something with disconnector i think. Maybe move this. We'll see later...
                 });
 
