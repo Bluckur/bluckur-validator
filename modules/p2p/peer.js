@@ -23,15 +23,16 @@ module.exports = class Peer {
      */
     constructor() {
         //NOTE: We need to handle our own list and cannot use the list provided by socketio. Because we now also use it to check connectivity
-        if(!instance){
+        if (!instance) {
             instance = this;
             this.PeerQueue = new Queue(4);
+            new InitialConnector().sleeping = false;
         }
 
         return instance;
     }
 
-    initate(){
+    initate() {
         this.port = 8080;
         // this.client = ioClient.connect('http://localhost:' + this.port);
         this.server = ioServer.listen(this.port);
@@ -40,9 +41,13 @@ module.exports = class Peer {
 
         var initalconnector = new InitialConnector(2000); //Check every 2 secs for other peer when you are first peer.
         initalconnector.initiate().then((result) => {
-            this.sender.sendNewPeerRequest(result.myIp, result.peerIp);
-        }, (err) =>{
+            if (!result.peerIp === "first") {
+                this.sender.sendNewPeerRequest(result.myIp, result.peerIp);
+
+            }
+        }, (err) => {
             // console.log(err);
-        }) 
+        })
     }
+
 }
