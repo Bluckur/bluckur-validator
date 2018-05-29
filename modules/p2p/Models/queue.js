@@ -49,9 +49,9 @@ module.exports = class Queue {
     }
 
     clearSockets() {
-        this.data.forEach(element => {
-            element.client = undefined;
-        });
+       this.data.map(element => {
+            ip:element.ip;
+        }); 
     }
 
     copy() {

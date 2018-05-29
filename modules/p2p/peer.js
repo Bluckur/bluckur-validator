@@ -1,7 +1,3 @@
-import {
-    connect
-} from 'net';
-
 // Hier moet server en client zooi in gebeuren (het ontvangen en verzenden dus) eventueel kan hier ook de peer/sessie lijst bijgehouden worden.
 
 'use strict';
@@ -59,25 +55,11 @@ module.exports = class Peer {
 
     waitTillConnection() {
         if (new InitialConnector().sleeping)
-            setTimeout(() => {
-                console.log("Waiting for first connection...")
-                this.waitTillConnection()
-            }, 2000)
+        setTimeout(() => {
+            console.log("Waiting for first connection...")
+            this.waitTillConnection()
+        }, 2000)
     }
 
 
-    checkAndConect(ip) {
-        let contained
-        this.PeerQueue.forEach(element => {
-            if (element.ip === ip) {
-                contained = true
-            }
-        });
-        if (!contained) {
-            this.PeerQueue.add({
-                client: ioClient.connect('http://' + ip + ':8080'),
-                ip: ip
-            })
-        }
-    }
 }
