@@ -41,6 +41,10 @@ module.exports = class Peer {
         this.sender = new Sender(this.server, this.receiver, this.PeerQueue);
         this.receiver.setSender(this.sender);
 
+        this.addMessageHandler("type", (message) => {
+            console.log(message);
+        })
+
         var initalconnector = new InitialConnector(2000); //Check every 2 secs for other peer when you are first peer.
         initalconnector.initiate().then((result) => {
             console.log(result)
@@ -56,11 +60,18 @@ module.exports = class Peer {
     }
 
     waitTillConnection() {
-        if (new InitialConnector().sleeping)
-        setTimeout(() => {
-            console.log("Waiting for first connection...")
-            this.waitTillConnection()
-        }, 2000)
+        if (new InitialConnector().sleeping) {
+            setTimeout(() => {
+                console.log("Waiting for first connection...")
+                this.waitTillConnection()
+            }, 2000)
+        }else{
+            setTimeout(() => {
+                this.sendMessage("type", {
+                    content: "hihi"
+                })
+            }, 2000);
+        }
     }
 
 
@@ -79,13 +90,13 @@ module.exports = class Peer {
         }
     }
 
-    sendMessage(messageType, message){
+    sendMessage(messageType, message) {
         message.type = messageType;
         message.id = uuid();
         this.sender.sendMessageToAll(message);
     }
 
-    addMessageHandler(messageType, implementation){
+    addMessageHandler(messageType, implementation) {
         this.receiver.addReceiveImplementation(messageType, implementation);
     }
 }
