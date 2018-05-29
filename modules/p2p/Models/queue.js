@@ -53,7 +53,7 @@ module.exports = class Queue {
             }
         }
         if (value != null) {
-            this.data.remove[value];
+            this.data.splice(value, i);
         }
     }
 
