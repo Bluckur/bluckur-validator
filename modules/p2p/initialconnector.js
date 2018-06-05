@@ -14,7 +14,7 @@ module.exports = class InitialConnector {
 
     constructor(firstTimeout) {
         if (!instance) {
-            this.ip = "http://145.93.112.207:8082";
+            this.ip = "http://145.93.112.163:8082";
             this.myIp = undefined;
             this.peerIp = undefined;
             this.timeout = firstTimeout;
