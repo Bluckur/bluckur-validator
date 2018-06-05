@@ -11,25 +11,29 @@ class Receiver {
         this.PeerQueue = PeerQueue;
         this.receivedMessages = [];
         this.handleServerReceives();
-        this.receiveHandlers = new Map();
+        this.serverReceiveHandlers = new Map();
+        this.clientReceiveHanlders = new Map();
         this.disconnector = disconnector;
 
-        this.addReceiveImplementation('i_am_back', (message) => {
+        this.addBroadcastReceiveImplementation('i_am_back', (message) => {
             let value = this.sender.disconnectedIP.indexOf(message)
             if (value) {
                 this.sender.disconnectedIP.splice(value, 1);
             }
-        });
-
-       
+        })
     }
 
     setSender(sender) {
         this.sender = sender;
     }
 
-    addReceiveImplementation(messageType, implementation) {
-        this.receiveHandlers.set(messageType, implementation);
+    addBroadcastReceiveImplementation(messageType, implementation) {
+        this.serverReceiveHandlers.set(messageType, implementation);
+    }
+
+    addSingleMessageReceiveImplementation(messageType, serverImplementation, clientImplementation){
+        this.serverReceiveHandlers.set(messageType, serverImplementation);
+        this.clientReceiveHanlders.set(messageType, clientImplementation);
     }
 
     handleServerReceives() {
@@ -91,6 +95,25 @@ class Receiver {
                     this.disconnector.checkQueue();
                 })
 
+                socket.on('single_message', (message) => {
+                    if (this.server.ourSockets === undefined) {
+                        this.server.ourSockets = [];
+                    }
+
+                    this.server.ourSockets.push(socket);
+                    this.disconnector.addServerDisconnectionHandler(socket); 
+
+                    var implementation = this.serverReceiveHandlers.get(message.type);
+                    let result = undefined;
+                    if (implementation !== undefined && typeof implementation === 'function') {
+                        result = implementation(message);
+                    } else {
+                        console.log("No implementation found for message with type: " + message.type);
+                    } 
+                    result.type = message.type;
+                    socket.emit('single_message', result);
+                })
+
                 socket.on('message', (message) => {
                     if (this.server.ourSockets === undefined) {
                         this.server.ourSockets = [];
@@ -102,7 +125,7 @@ class Receiver {
                         this.receivedMessages.push(message);
                         this.sender.sendMessageToAll(message);
 
-                        var implementation = this.receiveHandlers.get(message.type);
+                        var implementation = this.serverReceiveHandlers.get(message.type);
                         if (implementation !== undefined && typeof implementation === 'function') {
                             implementation(message);
                         } else {
@@ -150,6 +173,14 @@ class Receiver {
                 });
             })
 
+            client.on('single_message', (received) => {
+                var implementation = this.clientReceiveHanlders.get(received.type);
+                if (implementation !== undefined && typeof implementation === 'function') {
+                    implementation(received);
+                } else {
+                    console.log("No implementation found for message with type: " + message.type);
+                }
+            })
         }
     }
 }
