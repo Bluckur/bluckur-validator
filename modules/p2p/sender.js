@@ -23,7 +23,7 @@ class Sender {
         //ToDo: NSSocket??
     }
 
-    setReceiver(receiver){
+    setReceiver(receiver) {
         this.receiver = receiver;
     }
 
@@ -36,9 +36,11 @@ class Sender {
 
     sendHelpRequest() {
         var self = this;
-        console.log("Started help request. Current Queue size: " + self.PeerQueue.size())
+        console.log("self.peerQueue.size < 3?" + (self.PeerQueue.size() < 3))
+        console.log("!this.helprequeststarted = " + !this.helpRequesterStarted)
         if (self.PeerQueue.size() < 3) {
             if (!this.helpRequesterStarted) {
+                console.log("Started help request. Current Queue size: " + self.PeerQueue.size())
                 this.helpRequesterStarted = true;
                 setTimeout(() => {
                     let toSend = {
