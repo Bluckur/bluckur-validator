@@ -56,7 +56,6 @@ class Receiver {
 
                 })
                 socket.on('help_request', (message) => {
-                    console.log("RECEIVED HELP REQUEST FROM: " + message.ip)
                     let copy = new Queue(4, this.PeerQueue.clearSockets());
 
                     this.PeerQueue.add({
@@ -66,8 +65,6 @@ class Receiver {
                     socket.emit('help_response', {
                         peers: copy
                     })
-                    console.log("I have just sent a help response with content: ")
-                    console.log(copy.data)
 
                     this.disconnector.checkQueue(socket);
                 })
