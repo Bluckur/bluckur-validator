@@ -14,7 +14,7 @@ class Receiver {
         this.receiveHandlers = new Map();
         this.receivedIamBack = [];
         this.disconnector = disconnector;
-        
+
         this.addReceiveImplementation('i_am_back', () => {
             let value = null;
             for (var i = 0; i < this.sender.disconnectedIP.length; i++) {
@@ -25,6 +25,7 @@ class Receiver {
             }
             if (value !== null) {
                 this.sender.disconnectedIP.splice(value, 1);
+                console.log(this.sender.disconnectedIP)
             }
         });
     }
@@ -63,6 +64,11 @@ class Receiver {
                     this.PeerQueue.add({
                         ip: message
                     })
+
+                    let i_am_back_message;
+                    i_am_back_message.type = 'i_am_back';
+                    i_am_back_message.id = uuid();
+                    this.sender.sendMessageToAll(i_am_back_message);
 
                     socket.emit('init_connections', {
                         peers: copy
@@ -136,10 +142,10 @@ class Receiver {
             client.on('help_response', (received) => {
                 let queue = received.peers;
                 queue = new Queue(4, queue.data);
-                
-                if(received.disconnectedIP){
+
+                if (received.disconnectedIP) {
                     received.disconnectedIP.forEach(element => {
-                        if(received.disconnectedIP.indexOf(element)){
+                        if (received.disconnectedIP.indexOf(element)) {
                             queue.removeIPRecord(element)
                         }
                     });
