@@ -45,7 +45,7 @@ module.exports = class Peer {
         this.PeerQueue.setReceiver(this.receiver);
 
         this.addMessageHandler("type", (message) => {
-             console.log(message);
+             console.log(message.content);
              console.log(this.PeerQueue.clearSockets())
         })
 
