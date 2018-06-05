@@ -45,7 +45,7 @@ class Sender {
                     let toSend = {
                         ip: new InitialConnector().MyIP(),
                     }
-                    if (disconnectedIP) {
+                    if (self.disconnectedIP) {
                         toSend.disconnectedIP = self.disconnectedIP;
                     }
 

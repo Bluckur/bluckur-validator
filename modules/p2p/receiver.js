@@ -138,7 +138,11 @@ class Receiver {
                 queue = new Queue(4, queue.data);
                 
                 if(received.disconnectedIP){
-                    queue.removeIPRecord(received.disconnectedIP);
+                    received.disconnectedIP.forEach(element => {
+                        if(received.indexOf(element)){
+                            queue.removeIPRecord(element)
+                        }
+                    });
                 }
                 queue.data.forEach(peer => {
                     this.PeerQueue.add(peer)
