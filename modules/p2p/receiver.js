@@ -15,15 +15,9 @@ class Receiver {
         this.receivedIamBack = [];
         this.disconnector = disconnector;
 
-        this.addReceiveImplementation('i_am_back', () => {
-            let value = null;
-            for (var i = 0; i < this.sender.disconnectedIP.length; i++) {
-                if (this.sender.disconnectedIP[i].ip === ip) {
-                    value = i;
-                    break;
-                }
-            }
-            if (value !== null) {
+        this.addReceiveImplementation('i_am_back', (message) => {
+            let value = this.sender.disconnectedIP.indexOf(message)
+            if (value) {
                 this.sender.disconnectedIP.splice(value, 1);
                 console.log(this.sender.disconnectedIP)
             }
