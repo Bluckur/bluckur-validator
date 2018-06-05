@@ -30,9 +30,6 @@ module.exports = class Peer {
             this.PeerQueue = new Queue(4);
             this.port = 8080;
             new InitialConnector().sleeping = false;
-            process.on('SIGKILL', () => {
-                console.log('Exit application');
-            })
         }
 
         return instance;

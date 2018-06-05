@@ -71,7 +71,7 @@ module.exports = class Queue {
     delete(socket) {
         let value = null;
         for (var i = 0; i < this.data.length; i++) {
-            if (this.data[i].client === socket) {
+            if (this.data[i].ip === socket.handshake.address.substring(socket.handshake.address.lastIndexOf(":") + 1)) {
                 value = i;
                 break;
             }
@@ -81,6 +81,18 @@ module.exports = class Queue {
         }
     }
 
+    removeIPRecord(ip){
+        let value = null;
+        for (var i = 0; i < this.data.length; i++) {
+            if (this.data[i].ip === ip) {
+                value = i;
+                break;
+            }
+        }
+        if (value != null) {
+            this.data.splice(value, i);
+        }
+    }
 
     flip() {
         this.data.reverse();

@@ -31,18 +31,19 @@ class Sender {
         console.log(myIp + " - " + peerIp)
         var client = ioClient.connect('http://' + peerIp + ':8080');
         this.receiver.addClientReceives(client);
-        client.emit("new_connection", myIp)
+        client.emit("new_connection", myIp);
     }
+    
 
-    sendHelpRequest() {
+    sendHelpRequest(disconnectedIP) {
         var self = this;
         if (self.PeerQueue.size() < 3) {
             if (!this.helpRequesterStarted) {
-                console.log("Started help request. Current Queue size: " + self.PeerQueue.size())
                 this.helpRequesterStarted = true;
                 setTimeout(() => {
                     let toSend = {
-                        ip: new InitialConnector().MyIP()
+                        ip: new InitialConnector().MyIP(),
+                        disconnectedIP: disconnectedIP
                     }
 
                     let currentClient = self.PeerQueue.getNext();

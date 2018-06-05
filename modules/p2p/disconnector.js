@@ -31,17 +31,17 @@ module.exports = class Disconnector {
                 }
 
                 this.PeerQueue.delete(socket);
-                this.checkQueue();
+                this.checkQueue(socket.handshake.address.substring(socket.handshake.address.lastIndexOf(":") + 1));
             });
             socket.customInitiated = true;
         }
     }
 
-    checkQueue(socket) {
+    checkQueue(ip) {
         if (this.PeerQueue.size() === 0) {
             this.handleZeroQueueSize();
         } else if (this.PeerQueue.size() < 3) {
-            this.handleTooLittleConnections(socket);
+            this.handleTooLittleConnections(ip);
         }
     }
 
@@ -55,7 +55,7 @@ module.exports = class Disconnector {
         }
     }
 
-    handleTooLittleConnections(socket) {
-        this.sender.sendHelpRequest();
+    handleTooLittleConnections(ip) {
+        this.sender.sendHelpRequest(ip);
     }
 }
