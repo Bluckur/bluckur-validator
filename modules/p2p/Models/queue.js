@@ -39,7 +39,7 @@ module.exports = class Queue {
         if(this.receiver){
             this.data.forEach(element => {
                 if(element.client){
-                    this.receiver.addClientReceives(record.client);
+                    this.receiver.addClientReceives(element.client);
                 }
             });
         }
