@@ -20,18 +20,21 @@ module.exports = class Disconnector {
     }
 
     addServerDisconnectionHandler(socket) {
-        socket.on('disconnect', () => {
-            console.log("SOMEONE HAS LEFT OUR SERVER... AARGH"); //ToDo: do not remove socket.. Remove client
-            if (this.server.ourSockets.includes(socket)) {
-                var index = this.server.ourSockets.indexOf(socket);
-                if (index > -1) {
-                    this.server.ourSockets.splice(index, 1);
+        if (!socket.customInitiated) {
+            socket.on('disconnect', () => {
+                console.log("SOMEONE HAS LEFT OUR SERVER... AARGH"); //ToDo: do not remove socket.. Remove client
+                if (this.server.ourSockets.includes(socket)) {
+                    var index = this.server.ourSockets.indexOf(socket);
+                    if (index > -1) {
+                        this.server.ourSockets.splice(index, 1);
+                    }
                 }
-            }
 
-            this.PeerQueue.delete(socket);
-            this.checkQueue();
-        });
+                this.PeerQueue.delete(socket);
+                this.checkQueue();
+            });
+            socket.customInitiated = true;
+        }
     }
 
     checkQueue(socket) {

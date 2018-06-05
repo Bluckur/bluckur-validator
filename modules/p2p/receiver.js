@@ -36,7 +36,6 @@ class Receiver {
                     }
 
                     this.server.ourSockets.push(socket);
-
                     this.disconnector.addServerDisconnectionHandler(socket);
 
                     new InitialConnector().sleeping = false // This is needed to stop the sleeping of the peer if he was first
@@ -55,6 +54,12 @@ class Receiver {
 
                 })
                 socket.on('help_request', (message) => {
+                    if (this.server.ourSockets === undefined) {
+                        this.server.ourSockets = [];
+                    }
+
+                    this.server.ourSockets.push(socket);
+                    this.disconnector.addServerDisconnectionHandler(socket);
                 console.log("RECEIVED HELP REQUEST FROM: " + message.ip)
                     let copy = new Queue(4, this.PeerQueue.clearSockets());
 
@@ -70,6 +75,12 @@ class Receiver {
                 })
 
                 socket.on('message', (message) => {
+                    if (this.server.ourSockets === undefined) {
+                        this.server.ourSockets = [];
+                    }
+
+                    this.server.ourSockets.push(socket);
+                    this.disconnector.addServerDisconnectionHandler(socket);
                     if (this.receivedMessages.filter(m => message.id === m.id).length === 0) {
                         this.receivedMessages.push(message);
                         this.sender.sendMessageToAll(message);
