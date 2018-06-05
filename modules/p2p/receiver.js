@@ -66,6 +66,7 @@ class Receiver {
                     socket.emit('help_response', {
                         peers: copy
                     })
+                    console.log("I have just sent a help response with content: " + {peers: copy})
 
                     this.disconnector.checkQueue(socket);
                 })
