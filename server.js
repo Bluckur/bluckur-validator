@@ -2,7 +2,7 @@ require('dotenv').config();
 
 const Receiver = require('./services/receiver.js');
 const Sender = require('./services/sender');
-const NodeProvider = require('./services/nodeProvider.js');
+const nodeFactory = require('./services/nodeFactory.js');
 const Messager = require('./util/messager');
 const Security = require('./logic/security');
 const QrCodeGenerator = require('./services/qrCodeGenerator');
@@ -11,6 +11,16 @@ const express = require('express');
 const http = require('http');
 
 const qrCodeGenerator = new QrCodeGenerator();
+
+// Configuration for node initiation
+const nodeConfig = {
+  isBackup: process.env.IS_BACKUP,
+  host: process.env.NODE_HOST,
+  port: 9177,
+  backupHost1: process.env.BACKUP_1_HOST,
+  backupHost2: process.env.BACKUP_2_HOST,
+  backupPort: 9178,
+};
 
 let io = require('socket.io');
 
@@ -39,7 +49,7 @@ opn(`http://localhost:${server.address().port}`, (err) => {
 
 /** */
 function initNode() {
-  node = new NodeProvider().createNode();
+  node = nodeFactory.createInstance(nodeConfig);
 
   // Enable sending and receiving messages
   sender = new Sender(node);
