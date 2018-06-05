@@ -47,7 +47,7 @@ module.exports = class InitialConnector {
                     reject(Error("Rejected no IP"));
                 }
             }, (err) => {
-                console.log(err);
+                reject('Rejeceted no IP')
             })
         })
 
