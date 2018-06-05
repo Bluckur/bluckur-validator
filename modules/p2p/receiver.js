@@ -139,7 +139,7 @@ class Receiver {
                 
                 if(received.disconnectedIP){
                     received.disconnectedIP.forEach(element => {
-                        if(received.indexOf(element)){
+                        if(received.disconnectedIP.indexOf(element)){
                             queue.removeIPRecord(element)
                         }
                     });
