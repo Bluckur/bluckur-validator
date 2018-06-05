@@ -31,7 +31,8 @@ module.exports = class Disconnector {
                 }
 
                 this.PeerQueue.delete(socket);
-                this.checkQueue(socket.handshake.address.substring(socket.handshake.address.lastIndexOf(":") + 1));
+                console.log(socket.handshake.address.substring(socket.handshake.address.lastIndexOf(":") + 1))
+                this.checkQueue("127.0.0.1");
             });
             socket.customInitiated = true;
         }
