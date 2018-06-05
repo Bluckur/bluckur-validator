@@ -57,7 +57,9 @@ module.exports = class Disconnector {
     }
 
     handleTooLittleConnections(ip) {
-        this.sender.disconnectedIP.unshift(ip);
-        this.sender.sendHelpRequest(ip);
+        if(ip){
+            this.sender.disconnectedIP.unshift(ip);
+        }
+        this.sender.sendHelpRequest();
     }
 }
