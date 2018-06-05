@@ -93,7 +93,6 @@ module.exports = class Queue {
             }
         }
         if (value !== null) {
-            console.log('Received ip of disconnected user. Removing from list: ' + ip )
             this.data.splice(value, 1);
         }
     }

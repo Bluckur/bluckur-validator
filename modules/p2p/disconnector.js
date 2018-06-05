@@ -19,6 +19,13 @@ module.exports = class Disconnector {
         this.peer = peer;
     }
 
+    setReceiverDisconnectImpl(receiver){
+        receiver.addReceiveImplementation('disconnection', (message) => {
+            this.PeerQueue.removeIPRecord(message.ip);
+            this.checkQueue(message.ip);
+        });
+    }
+
     addServerDisconnectionHandler(socket) {
         if (!socket.customInitiated) {
             socket.on('disconnect', () => {
@@ -30,6 +37,13 @@ module.exports = class Disconnector {
                         this.server.ourSockets.splice(index, 1);
                     }
                 }
+
+                let disconnect_message = {
+                    type: 'disconnection',
+                    id: uuid(),
+                    ip: socket.handshake.address.substring(socket.handshake.address.lastIndexOf(":") + 1) 
+                };
+                this.sender.sendMessageToAll(disconnect_message);
 
                 this.PeerQueue.delete(socket);
                 this.checkQueue(socket.handshake.address.substring(socket.handshake.address.lastIndexOf(":") + 1));

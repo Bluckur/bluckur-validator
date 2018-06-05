@@ -12,16 +12,16 @@ class Receiver {
         this.receivedMessages = [];
         this.handleServerReceives();
         this.receiveHandlers = new Map();
-        this.receivedIamBack = [];
         this.disconnector = disconnector;
 
         this.addReceiveImplementation('i_am_back', (message) => {
             let value = this.sender.disconnectedIP.indexOf(message)
             if (value) {
                 this.sender.disconnectedIP.splice(value, 1);
-                console.log(this.sender.disconnectedIP)
             }
         });
+
+       
     }
 
     setSender(sender) {
