@@ -64,10 +64,6 @@ class Receiver {
                         ip: message
                     })
 
-                    message.type = 'i_am_back';
-                    message.id = uuid();
-                    this.sender.sendMessageToAll(message);
-
                     socket.emit('init_connections', {
                         peers: copy
                     })
