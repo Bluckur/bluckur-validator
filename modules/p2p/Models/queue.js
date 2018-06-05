@@ -77,6 +77,7 @@ module.exports = class Queue {
             }
         }
         if (value != null) {
+            console.log(socket.handshake.address.substring(socket.handshake.address.lastIndexOf(":") + 1) + " has been removed from the clientlist")
             this.data.splice(value, i);
         }
     }

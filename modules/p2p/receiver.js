@@ -61,7 +61,6 @@ class Receiver {
 
                     this.server.ourSockets.push(socket);
                     this.disconnector.addServerDisconnectionHandler(socket);
-                    console.log("RECEIVED HELP REQUEST FROM: " + message.ip)
                     let copy = new Queue(4, this.PeerQueue.clearSockets());
 
                     this.PeerQueue.add({
@@ -125,8 +124,6 @@ class Receiver {
                 if(received.disconnectedIP){
                     queue.removeIPRecord(received.disconnectedIP);
                 }
-                console.log("RECEIVED HELP RESPONSE WITH DATA: ")
-                console.log(queue.data)
                 queue.data.forEach(peer => {
                     this.PeerQueue.add(peer)
                 });
