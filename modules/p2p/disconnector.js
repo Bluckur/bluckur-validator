@@ -1,5 +1,6 @@
 // Hier moet server en client zooi in gebeuren (het ontvangen en verzenden dus) eventueel kan hier ook de peer/sessie lijst bijgehouden worden.
 const InitialConnector = require('./initialconnector');
+const uuid = require('uuid/v1');
 /**
  * Default message
  */
