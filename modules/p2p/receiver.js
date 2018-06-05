@@ -15,7 +15,7 @@ class Receiver {
         this.receivedIamBack = [];
         this.disconnector = disconnector;
         
-        this.receiveHandlers('i_am_back', () => {
+        this.addReceiveImplementation('i_am_back', () => {
             let value = null;
             for (var i = 0; i < this.sender.disconnectedIP.length; i++) {
                 if (this.sender.disconnectedIP[i].ip === ip) {
