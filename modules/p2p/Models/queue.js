@@ -38,8 +38,9 @@ module.exports = class Queue {
     addClientReceives(){
         if(this.receiver){
             this.data.forEach(element => {
-                if(element.client){
+                if(element.client && !element.client.initated){
                     this.receiver.addClientReceives(element.client);
+                    element.client.initated = true;
                 }
             });
         }
