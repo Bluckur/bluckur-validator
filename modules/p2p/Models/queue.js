@@ -17,10 +17,17 @@ module.exports = class Queue {
         this.next = 0;
     }
 
+    setReceiver(receiver){
+        this.receiver = receiver;
+    }
+
     add(record) {
         if (record.ip && record.ip !== new InitialConnector().MyIP() && !this.contains(record.ip)) {
             if (record.client === undefined) {
                 record.client = ioClient.connect('http://' + record.ip + ':8080')
+                if(this.receiver){
+                    this.receiver.addClientReceives(record.client);
+                }
             }
             this.data.unshift(record);
             if (this.data.length > this.max) {

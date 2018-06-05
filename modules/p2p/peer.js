@@ -42,6 +42,7 @@ module.exports = class Peer {
         this.receiver = new Receiver(this.server, this.PeerQueue, this.disconnector);
         this.receiver.setSender(this.sender);
         this.sender.setReceiver(this.receiver);
+        this.PeerQueue.setReceiver(this.receiver);
 
         this.addMessageHandler("type", (message) => {
             // console.log(message);
