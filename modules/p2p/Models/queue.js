@@ -25,14 +25,23 @@ module.exports = class Queue {
         if (record.ip && record.ip !== new InitialConnector().MyIP() && !this.contains(record.ip)) {
             if (record.client === undefined) {
                 record.client = ioClient.connect('http://' + record.ip + ':8080')
-                if(this.receiver){
-                    this.receiver.addClientReceives(record.client);
-                }
+
             }
             this.data.unshift(record);
             if (this.data.length > this.max) {
                 this.remove();
             }
+        }
+        this.addClientReceives();
+    }
+
+    addClientReceives(){
+        if(this.receiver){
+            this.data.forEach(element => {
+                if(element.client){
+                    this.receiver.addClientReceives(record.client);
+                }
+            });
         }
     }
 

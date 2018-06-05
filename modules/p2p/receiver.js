@@ -109,7 +109,8 @@ class Receiver {
 
             client.on('help_response', (received) => {
                 let queue = received.peers;
-                console.log("RECEIVED HELP RESPONSE WITH DATA: " + queue)
+                console.log("RECEIVED HELP RESPONSE WITH DATA: ")
+                console.log(queue.data)
                 queue.data.forEach(peer => {
                     this.PeerQueue.add(peer)
                 });
