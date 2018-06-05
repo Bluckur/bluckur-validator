@@ -5,7 +5,7 @@ const ioClient = require('socket.io-client')
 
 module.exports = class Queue {
     constructor(length, data) {
-        this.max = 4;
+        this.max = 3;
         this.data = [];
         if (data !== undefined && data !== null) {
             data.forEach(element => {
