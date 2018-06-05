@@ -26,7 +26,6 @@ class Receiver {
         if (this.server) {
             // event fired every time a new client connects:
             this.server.on('connection', (socket) => {
-
                 socket.on('message_isAlive', (message) => {
                     socket.emit("message_isAlive", "Yes, I am online")
                 })

@@ -20,7 +20,8 @@ module.exports = class Disconnector {
     }
 
     addServerDisconnectionHandler(socket) {
-        socket.on('disconnect', () => {
+        socket.on('disconnect', (ip) => {
+            console.log(ip); //ToDo: do not remove socket.. Remove client
             if (this.server.ourSockets.includes(socket)) {
                 var index = this.server.ourSockets.indexOf(socket);
                 if (index > -1) {

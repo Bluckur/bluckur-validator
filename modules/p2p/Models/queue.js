@@ -25,7 +25,6 @@ module.exports = class Queue {
         if (record.ip && record.ip !== new InitialConnector().MyIP() && !this.contains(record.ip)) {
             if (record.client === undefined) {
                 record.client = ioClient.connect('http://' + record.ip + ':8080')
-
             }
             this.data.unshift(record);
             if (this.data.length > this.max) {
@@ -48,7 +47,7 @@ module.exports = class Queue {
 
     remove() {
         let record = this.data.pop();
-        record.client.emit('disconnect')
+        record.client.emit('disconnect', new InitialConnector().MyIP())
     }
 
     first() {
