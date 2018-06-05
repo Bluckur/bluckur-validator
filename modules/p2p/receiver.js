@@ -120,8 +120,8 @@ class Receiver {
 
             client.on('help_response', (received) => {
                 let queue = received.peers;
-                if(message.disconnectedIP){
-                    queue.removeIPRecord(message.disconnectedIP);
+                if(received.disconnectedIP){
+                    queue.removeIPRecord(received.disconnectedIP);
                 }
                 console.log("RECEIVED HELP RESPONSE WITH DATA: ")
                 console.log(queue.data)
