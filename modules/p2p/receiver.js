@@ -67,7 +67,7 @@ class Receiver {
 
                     let i_am_back_message = {
                         type: 'i_am_back',
-                        id = uuid()
+                        id: uuid()
                     };
                     this.sender.sendMessageToAll(i_am_back_message);
 
