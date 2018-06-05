@@ -47,6 +47,7 @@ class Sender {
 
                     let currentClient = self.PeerQueue.getNext();
                     currentClient.emit("help_request", toSend);
+                    this.helpRequesterStarted = false;
                     self.sendHelpRequest()
 
                 }, 5000)
