@@ -121,6 +121,7 @@ class Receiver {
             client.on('help_response', (received) => {
                 let queue = received.peers;
                 queue = new Queue(4, queue.data);
+                
                 if(received.disconnectedIP){
                     queue.removeIPRecord(received.disconnectedIP);
                 }
