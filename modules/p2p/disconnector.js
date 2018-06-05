@@ -30,11 +30,9 @@ module.exports = class Disconnector {
     addServerDisconnectionHandler(socket) {
         if (!socket.customInitiated) {
             socket.on('disconnect', () => {
-                console.log(socket.handshake.address.substring(socket.handshake.address.lastIndexOf(":") + 1) + " HAS LEFT OUR SERVER"); //ToDo: do not remove socket.. Remove client
                 if (this.server.ourSockets.includes(socket)) {
                     var index = this.server.ourSockets.indexOf(socket);
                     if (index > -1) {
-                        console.log(socket.handshake.address.substring(socket.handshake.address.lastIndexOf(":") + 1) + " has been removed from ourSockets list")
                         this.server.ourSockets.splice(index, 1);
                     }
                 }

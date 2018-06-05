@@ -45,13 +45,16 @@ module.exports = class Peer {
         this.PeerQueue.setReceiver(this.receiver);
         this.disconnector.setReceiverDisconnectImpl(this.receiver);
 
-        this.addMessageHandler("type", (message) => {
-             console.log(message.content);
-             console.log(this.PeerQueue.clearSockets())
-        })
+        // this.addMessageHandler("type", (message) => {
+        //      console.log(message.content);
+        //      console.log(this.PeerQueue.clearSockets())
+        // })
 
         this.startInitialConnector();
-        this.testSend();
+    }
+
+    initated(){
+        return this.PeerQueue.size() > 0;
     }
 
     startInitialConnector(){
@@ -68,14 +71,14 @@ module.exports = class Peer {
         })
     }
 
-    testSend() {
-        setTimeout(() => {
-            this.sendMessage("type", {
-                content: "hihi"
-            })
-            this.testSend();
-        }, 5000);
-    }
+    // testSend() {
+    //     setTimeout(() => {
+    //         this.sendMessage("type", {
+    //             content: "hihi"
+    //         })
+    //         this.testSend();
+    //     }, 5000);
+    // }
 
     waitTillConnection() {
         if (new InitialConnector().sleeping) {
@@ -87,6 +90,7 @@ module.exports = class Peer {
     }
 
     sendMessage(messageType, message) {
+
         message.type = messageType;
         message.id = uuid();
         this.sender.sendMessageToAll(message);
