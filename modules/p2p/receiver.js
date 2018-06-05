@@ -81,9 +81,10 @@ class Receiver {
                         } else {
                             console.log("No implementation found for message with type: " + message.type);
                         }
+
+                        this.disconnector.checkQueue(socket);
                     }
 
-                    this.disconnector.checkQueue(socket);
                 })
             });
         }
