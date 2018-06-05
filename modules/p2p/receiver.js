@@ -29,6 +29,7 @@ class Receiver {
                 socket.on('message_isAlive', (message) => {
                     socket.emit("message_isAlive", "Yes, I am online")
                 })
+                let socketIP = socket.handshake.address.substring(socket.handshake.address.lastIndexOf(":") + 1);
 
                 socket.on('new_connection', (message) => {
                     if (this.server.ourSockets === undefined) {
@@ -72,7 +73,7 @@ class Receiver {
                         disconnectedIP: message.disconnectedIP
                     })
 
-                    this.disconnector.checkQueue(socket);
+                    this.disconnector.checkQueue(socketIP);
                 })
 
                 socket.on('message', (message) => {
@@ -93,7 +94,7 @@ class Receiver {
                             console.log("No implementation found for message with type: " + message.type);
                         }
 
-                        this.disconnector.checkQueue(socket);
+                        this.disconnector.checkQueue(socketIP);
                     }
 
                 })
