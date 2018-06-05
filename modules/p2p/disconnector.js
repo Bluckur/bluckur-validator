@@ -52,7 +52,6 @@ module.exports = class Disconnector {
     }
 
     handleTooLittleConnections(socket) {
-        console.log("started handleTooLittleConnections")
         this.sender.sendHelpRequest();
     }
 }

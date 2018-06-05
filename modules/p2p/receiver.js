@@ -56,6 +56,7 @@ class Receiver {
 
                 })
                 socket.on('help_request', (message) => {
+                console.log("RECEIVED HELP REQUEST FROM: " + message.ip)
                     let copy = new Queue(4, this.PeerQueue.clearSockets());
 
                     this.PeerQueue.add({
