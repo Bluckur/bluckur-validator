@@ -17,7 +17,7 @@ module.exports = class Queue {
         this.next = 0;
     }
 
-    setReceiver(receiver){
+    setReceiver(receiver) {
         this.receiver = receiver;
     }
 
@@ -34,10 +34,10 @@ module.exports = class Queue {
         this.addClientReceives();
     }
 
-    addClientReceives(){
-        if(this.receiver){
+    addClientReceives() {
+        if (this.receiver) {
             this.data.forEach(element => {
-                if(element.client && !element.client.initated){
+                if (element.client && !element.client.initated) {
                     this.receiver.addClientReceives(element.client);
                     element.client.initated = true;
                 }
@@ -81,7 +81,7 @@ module.exports = class Queue {
         }
     }
 
-    removeIPRecord(ip){
+    removeIPRecord(ip) {
         let value = null;
         for (var i = 0; i < this.data.length; i++) {
             if (this.data[i].ip === ip) {
@@ -124,13 +124,18 @@ module.exports = class Queue {
     }
 
     getNext() {
-        let returnThis = this.data[this.next].client;
-        this.next++;
+        if (this.data[this.next]) {
+            let returnThis = this.data[this.next].client;
+            this.next++;
 
-        if (this.next >= this.size()) {
+            if (this.next >= this.size()) {
+                this.next = 0;
+            }
+
+            return returnThis;
+        }else{
             this.next = 0;
+            return this.getNext();
         }
-
-        return returnThis;
     }
 }
