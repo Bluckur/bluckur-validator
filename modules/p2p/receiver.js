@@ -65,9 +65,10 @@ class Receiver {
                         ip: message
                     })
 
-                    let i_am_back_message;
-                    i_am_back_message.type = 'i_am_back';
-                    i_am_back_message.id = uuid();
+                    let i_am_back_message = {
+                        type: 'i_am_back',
+                        id = uuid()
+                    };
                     this.sender.sendMessageToAll(i_am_back_message);
 
                     socket.emit('init_connections', {
