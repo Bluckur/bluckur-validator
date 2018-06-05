@@ -77,7 +77,7 @@ module.exports = class Queue {
             }
         }
         if (value !== null) {
-            this.data.splice(value, i);
+            this.data.splice(value, 1);
             console.log(socket.handshake.address.substring(socket.handshake.address.lastIndexOf(":") + 1) + " has been removed from the clientlist" )
             console.log("Conent of clientlist: ") 
             console.log(this.clearSockets())
@@ -94,7 +94,7 @@ module.exports = class Queue {
         }
         if (value !== null) {
             console.log('Received ip of disconnected user. Removing from list: ' + ip )
-            this.data.splice(value, i);
+            this.data.splice(value, 1);
         }
     }
 
