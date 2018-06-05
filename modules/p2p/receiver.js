@@ -3,6 +3,7 @@ const Queue = require('./Models/queue')
 const InitialConnector = require('./initialconnector')
 const ioClient = require('socket.io-client')
 const Peer = require('./peer')
+const uuid = require('uuid/v1');
 
 class Receiver {
     constructor(ioServer, PeerQueue, disconnector) {
@@ -11,7 +12,21 @@ class Receiver {
         this.receivedMessages = [];
         this.handleServerReceives();
         this.receiveHandlers = new Map();
+        this.receivedIamBack = [];
         this.disconnector = disconnector;
+        
+        this.receiveHandlers('i_am_back', () => {
+            let value = null;
+            for (var i = 0; i < this.sender.disconnectedIP.length; i++) {
+                if (this.sender.disconnectedIP[i].ip === ip) {
+                    value = i;
+                    break;
+                }
+            }
+            if (value !== null) {
+                this.sender.disconnectedIP.splice(value, 1);
+            }
+        });
     }
 
     setSender(sender) {
@@ -49,6 +64,10 @@ class Receiver {
                         ip: message
                     })
 
+                    message.type = 'i_am_back';
+                    message.id = uuid();
+                    this.sender.sendMessageToAll(message);
+
                     socket.emit('init_connections', {
                         peers: copy
                     })
@@ -72,7 +91,7 @@ class Receiver {
                         disconnectedIP: message.disconnectedIP
                     })
 
-                    this.disconnector.checkQueue(socketIP);
+                    this.disconnector.checkQueue();
                 })
 
                 socket.on('message', (message) => {
@@ -93,7 +112,7 @@ class Receiver {
                             console.log("No implementation found for message with type: " + message.type);
                         }
 
-                        this.disconnector.checkQueue(socketIP);
+                        this.disconnector.checkQueue();
                     }
 
                 })
@@ -115,7 +134,7 @@ class Receiver {
                     ip: new InitialConnector().InitialPeerIP()
                 })
 
-                this.sender.sendHelpRequest();
+                this.disconnector.checkQueue();
             })
 
             client.on('help_response', (received) => {

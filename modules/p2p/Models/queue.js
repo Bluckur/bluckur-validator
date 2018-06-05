@@ -128,6 +128,9 @@ module.exports = class Queue {
     }
 
     getNext() {
+        if(this.data.length === 0){
+            return undefined;
+        }
         if (this.data[this.next]) {
             let returnThis = this.data[this.next].client;
             this.next++;

@@ -21,6 +21,8 @@ class Sender {
         //Only add connections to queue which are made by sender...
 
         //ToDo: NSSocket??
+
+        this.disconnectedIP = [];
     }
 
     setReceiver(receiver) {
@@ -34,8 +36,7 @@ class Sender {
         client.emit("new_connection", myIp);
     }
 
-
-    sendHelpRequest(disconnectedIP) {
+    sendHelpRequest() {
         var self = this;
         if (self.PeerQueue.size() < 3) {
             if (!this.helpRequesterStarted) {
@@ -44,15 +45,16 @@ class Sender {
                     let toSend = {
                         ip: new InitialConnector().MyIP(),
                     }
-                    if(disconnectedIP){
-                        toSend.disconnectedIP = disconnectedIP;
+                    if (disconnectedIP) {
+                        toSend.disconnectedIP = self.disconnectedIP;
                     }
 
                     let currentClient = self.PeerQueue.getNext();
-                    currentClient.emit("help_request", toSend);
-                    this.helpRequesterStarted = false;
-                    self.sendHelpRequest(disconnectedIP)
-
+                    if (currentClient) {
+                        currentClient.emit("help_request", toSend);
+                        this.helpRequesterStarted = false;
+                        self.sendHelpRequest()
+                    }
                 }, 5000)
             }
         } else {
