@@ -45,9 +45,8 @@ module.exports = class Peer {
         this.PeerQueue.setReceiver(this.receiver);
         this.disconnector.setReceiverDisconnectImpl(this.receiver);
 
-        this.addbroadcastMessageHandler("type", (message) => {
+        this.addbroadcastMessageHandler("testMessage", (message) => {
              console.log(message.content);
-             console.log(this.PeerQueue.clearSockets())
         })
 
         this.startInitialConnector();
@@ -74,8 +73,8 @@ module.exports = class Peer {
 
     testSend() {
         setTimeout(() => {
-            this.broadcastMessage("type", {
-                content: "hihi"
+            this.broadcastMessage("testMessage", {
+                content: "This is a test message. Everyone will receive this."
             })
             this.testSend();
         }, 5000);
