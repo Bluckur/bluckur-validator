@@ -3,15 +3,20 @@ const readlineSync = require('readline-sync');
 
 let peer = new Peer();
 peer.initiate();
-while (!peer.initiated){
-
-}
 peer.addbroadcastMessageHandler("chat", (message) => {
-	console.log(message)
+	console.log(message.messageContent)
 })
 
-while (true) {
-	let message = readlineSync.question('toSend:');
-	//console.log('send ' + message + '!');
-	peer.broadcastMessage("chat", message)
+wait();
+
+function wait() {
+	setTimeout(() => {
+		if (peer.initated()) {
+			let message = readlineSync.question('toSend:');
+			let messageObject = { messageContent: message }
+			//console.log('send ' + message + '!');
+			peer.broadcastMessage("chat", messageObject)
+		}
+		wait()
+	}, 100);
 }

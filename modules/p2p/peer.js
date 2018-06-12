@@ -74,7 +74,7 @@ module.exports = class Peer {
 
     testSend() {
         setTimeout(() => {
-            this.sendMessage("type", {
+            this.broadcastMessage("type", {
                 content: "hihi"
             })
             this.testSend();
