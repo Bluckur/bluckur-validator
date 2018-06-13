@@ -86,7 +86,7 @@ function initNode() {
       sender: transaction.sender,
     }, privKey).then((signature) => {
       transaction.signature = signature;
-      validator.addTransactionAsync(transaction);
+      validator.addPendingTransactionAsync(transaction);
     }).catch((err) => {
       console.log(err);
     });
