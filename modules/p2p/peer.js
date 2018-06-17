@@ -45,12 +45,12 @@ module.exports = class Peer {
         this.PeerQueue.setReceiver(this.receiver);
         this.disconnector.setReceiverDisconnectImpl(this.receiver);
 
-        // this.addMessageHandler("type", (message) => {
-        //      console.log(message.content);
-        //      console.log(this.PeerQueue.clearSockets())
-        // })
+        this.addbroadcastMessageHandler("testMessage", (message) => {
+             console.log(message.content);
+        })
 
         this.startInitialConnector();
+        this.testSend();
     }
 
     initated(){
@@ -71,14 +71,14 @@ module.exports = class Peer {
         })
     }
 
-    // testSend() {
-    //     setTimeout(() => {
-    //         this.sendMessage("type", {
-    //             content: "hihi"
-    //         })
-    //         this.testSend();
-    //     }, 5000);
-    // }
+    testSend() {
+        setTimeout(() => {
+            this.broadcastMessage("testMessage", {
+                content: "This is a test message. Everyone will receive this."
+            })
+            this.testSend();
+        }, 5000);
+    }
 
     waitTillConnection() {
         if (new InitialConnector().sleeping) {
@@ -89,14 +89,29 @@ module.exports = class Peer {
         }
     }
 
-    sendMessage(messageType, message) {
+    sendSingleMessage(messageType, message){
+        message.type = messageType;
+        message.id = uuid();
+        this.sender.sendSingleMessage(message);        
+    }
 
+    /**
+     * 
+     * @param {String} messageType The type to handle
+     * @param {Function} handleRequest Handle request. This needs to return a response which can be handled in the response. If the response is not returned, undefined exceptions may occur
+     * @param {*} handleResponse Handle the repsonse.
+     */
+    addSingleMessageHandler(messageType, handleRequest, handleResponse) {
+        this.receiver.addSingleMessageReceiveImplementation(messageType, handleRequest, handleResponse);
+    }
+
+    broadcastMessage(messageType, message) {
         message.type = messageType;
         message.id = uuid();
         this.sender.sendMessageToAll(message);
     }
 
-    addMessageHandler(messageType, implementation) {
-        this.receiver.addReceiveImplementation(messageType, implementation);
+    addbroadcastMessageHandler(messageType, implementation) {
+        this.receiver.addBroadcastReceiveImplementation(messageType, implementation);
     }
 }

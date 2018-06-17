@@ -21,7 +21,7 @@ module.exports = class Disconnector {
     }
 
     setReceiverDisconnectImpl(receiver){
-        receiver.addReceiveImplementation('disconnection', (message) => {
+        receiver.addBroadcastReceiveImplementation('disconnection', (message) => {
             this.PeerQueue.removeIPRecord(message.ip);
             this.checkQueue(message.ip);
         });

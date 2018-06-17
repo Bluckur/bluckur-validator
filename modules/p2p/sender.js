@@ -67,6 +67,10 @@ class Sender {
             element.client.emit('message', message);
         });
     }
+
+    sendSingleMessage(message){
+        this.PeerQueue.getNext().emit('single_message', message);
+    }
 }
 
 module.exports = Sender;
