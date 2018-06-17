@@ -3,7 +3,10 @@
     "rules": {
         "no-console": "off",
         "linebreak-style": 0,
-        "max-len": 0
+        "max-len": 0,
+        "class-methods-use-this": "off",
+        "arrow-body-style": ["error", "always"],
+        "newline-per-chained-call": "off"
     },
     "env": {
         "node": true,
