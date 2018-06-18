@@ -101,13 +101,13 @@
                 </header>
 
                 <p>Here you can configure the wallet for which this validator will vouch</p>
-                <form method="post" action="#">
+                <form name="setwallet" id="setwallet">
                     <div class="row">
                         <div class="12u$">
-                            <textarea name="public-key" placeholder="Public-Key"></textarea>
+                            <textarea id="JSONkeypair" name="JSONkeypair" placeholder="JSON keypair"></textarea>
                         </div>
                         <div class="12u$">
-                            <input type="submit" value="Set Public-Key" />
+                            <input type="submit" value="Set keypair" />
                         </div>
                     </div>
                 </form>
@@ -180,12 +180,20 @@
                 <header>
                     <h2>Keygen</h2>
                 </header>
-                <button id="generatekeypair" onclick="generateKeypair()">Generate a keypair</button>
-                <div class="row">
-                    <div class="12u$">
-                        <textarea name="keypair" id="keypair" class="form textarea"></textarea>
+                <!-- <button id="generatekeypair" onclick="generateKeypair()">Generate a keypair</button> -->
+                <form name="keygen" id="keygen">
+                    <div class="row">
+                        <div class="12u$">
+                            <textarea name="keypair" id="keypair" class="form textarea"></textarea>
+                        </div>
                     </div>
-                </div>
+                    <div class="row">
+                        <div class="12u$">
+                            <input type="submit" value="Generate Keypair" />
+                        </div>
+                    </div>
+                </form>
+
             </div>
         </section>
         <section id="chat" class="two">
@@ -252,6 +260,14 @@
                 e.preventDefault();
                 generateQRCode();
             });
+            $('#keygen').on('submit', function(e) {
+                e.preventDefault();
+                generateKeypair();
+            });
+            $('#setwallet').on('submit', function(e) {
+                e.preventDefault();
+                setWallet();
+            });
         });
         console.log("Trying to connect");
         const socket = io.connect();
@@ -283,7 +299,11 @@
             });
 
             socket.on('keypair', (data) => {
-                document.getElementById('keypair').innerText = data.pubkey + ", " + data.privkey;
+                document.getElementById('keypair').innerHTML = JSON.stringify(data);
+            });
+
+            socket.on('wallet-set', (wallet) => {
+                alert("wallet set!" + wallet);
             });
 
             socket.on('chatmessage', (data) => {
@@ -291,32 +311,6 @@
                 var message = JSON.parse(data).message;
                 receiveMessage(sender, message);
             });
-
-            function submitNodeData(event) {
-                event.preventDefault();
-                const isBackup = document.querySelector('#node-data-isbackup').checked;
-                const host = document.querySelector('#node-data-host').value;
-                const port = document.querySelector('#node-data-port').value;
-                const backup1_port = document.querySelector('#node-data-backup1_port').value;
-                const backup1_host = document.querySelector('#node-data-backup1_host').value;
-                const backup2_port = document.querySelector('#node-data-backup2_port').value;
-                const backup2_host = document.querySelector('#node-data-backup2_host').value;
-
-                socket.emit('node-data', JSON.stringify({
-                    isBackup: isBackup,
-                    host: host,
-                    port: port,
-                    backup1_port: backup1_port,
-                    backup1_host: backup1_host,
-                    backup2_port: backup2_port,
-                    backup2_host: backup2_host
-                }));
-
-                // Change elements on webpage
-                document.getElementById('init-node-form').style.display = 'none';
-                document.getElementById('message-broadcast-form').style.display = 'initial'
-                document.getElementById('logging-container').style.display = 'initial'
-            }
 
             function broadcastMessage(event) {
                 event.preventDefault();
@@ -345,15 +339,22 @@
             socket.emit('generate-keypair');
         }
 
+        function setWallet() {
+            // console.log(document.querySelector('#JSONkeypair').value);
+            var keypair = document.querySelector('#JSONkeypair').value;
+            socket.emit('set-wallet', keypair);
+        }
+
         function generateQRCode() {
-          socket.emit('generate-qr-code-request', JSON.stringify({
-            publicKey: document.querySelector('#qr-code-public').value,
-            privateKey: document.querySelector('#qr-code-private').value,
-          }));
-          socket.on('generate-qr-code-reply', (data) => {
-            document.querySelector('#qr-code-image').src = data;
-          });
+            socket.emit('generate-qr-code-request', JSON.stringify({
+                publicKey: document.querySelector('#qr-code-public').value,
+                privateKey: document.querySelector('#qr-code-private').value,
+            }));
+            socket.on('generate-qr-code-reply', (data) => {
+                document.querySelector('#qr-code-image').src = data;
+            });
         }
     </script>
 </body>
+
 </html>
