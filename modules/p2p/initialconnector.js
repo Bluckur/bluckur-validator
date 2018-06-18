@@ -24,8 +24,6 @@ module.exports = class InitialConnector {
         }
         return instance;
     }
-    return instance;
-  }
 
   MyIP() {
     return this.myIp;

@@ -45,12 +45,7 @@ module.exports = class Peer {
         this.PeerQueue.setReceiver(this.receiver);
         this.disconnector.setReceiverDisconnectImpl(this.receiver);
 
-        this.addbroadcastMessageHandler("testMessage", (message) => {
-             console.log(message.content);
-        })
-
         this.startInitialConnector();
-        this.testSend();
     }
 
     initated(){
