@@ -7,19 +7,19 @@ const BlockSecurity = require('../lib/security/blockSecurity').getInstance();
 class CreateBlockTask {
     createAndSend(validator, lastBlockHash, pendingTransactions, blockNumber) {
         const timestamp = Date.now();
-        let proposedBlock = models.createBlockInstance({
+        const proposedBlock = models.createBlockInstance({
             transactions: pendingTransactions,
-            blockHeader: {
+            blockHeader: models.createBlockHeaderInstance({
                 version: 1,
                 blockReward: 50,
                 validator,
                 parentHash: lastBlockHash,
                 blockNumber,
                 timestamp,
-            },
+            }),
         });
         BlockSecurity.getHashAsync(proposedBlock).then((blockhash) => {
-            proposedBlock.blockHash = blockhash;
+            proposedBlock.blockHeader.blockHash = blockhash;
             // temporaryStorage.getInstance().addProposedBlock(proposedBlock);
             this.peer = new Peer();
             this.peer.broadcastMessage('proposedblock', proposedBlock);
