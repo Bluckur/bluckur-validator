@@ -2,42 +2,29 @@ const Cron = require('node-cron');
 const models = require('bluckur-models');
 const security = require('../lib/security/security').getInstance();
 const Peer = require('../lib/p2p/peer');
+const BlockSecurity = require('../lib/security/blockSecurity').getInstance();
 
 class CreateBlockTask {
-  createAndSend(validator, lastBlockHash, pendingTransactions, blockNumber) {
-      let proposedBlock;
-      let timestamp = Date.now();
-
-      security.hashAsync(validator + lastBlockHash + blockNumber + timestamp, pendingTransactions).then((result) =>{
-        if (!lastBlockHash.trim() === '') {
-          proposedBlock = models.createBlockInstance({
+    createAndSend(validator, lastBlockHash, pendingTransactions, blockNumber) {
+        const timestamp = Date.now();
+        let proposedBlock = models.createBlockInstance({
             transactions: pendingTransactions,
             blockHeader: {
-              validator: validator,
-              parentHash: lastBlockHash,
-              blockNumber: blockNumber,
-              blockHash: result,
-              timestamp: timestamp,
+                version: 1,
+                blockReward: 50,
+                validator,
+                parentHash: lastBlockHash,
+                blockNumber,
+                timestamp,
             },
-          });
-        } 
-        else {
-          proposedBlock = models.createBlockInstance({
-            transactions: pendingTransactions,
-            blockHeader: {
-              validator: validator,
-              blockNumber, blockNumber,
-              blockHash: result,
-              timestamp: timestamp,
-            },
-          });
-        }
-  
-        // temporaryStorage.getInstance().addProposedBlock(proposedBlock);
-        this.peer = new Peer();
-        this.peer.broadcastMessage("proposedblock", proposedBlock);
-      });
-  }
+        });
+        BlockSecurity.getHashAsync(proposedBlock).then((blockhash) => {
+            proposedBlock.blockHash = blockhash;
+            // temporaryStorage.getInstance().addProposedBlock(proposedBlock);
+            this.peer = new Peer();
+            this.peer.broadcastMessage('proposedblock', proposedBlock);
+        });
+    }
 }
 
 module.exports = CreateBlockTask;
