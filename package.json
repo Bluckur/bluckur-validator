@@ -8,6 +8,7 @@
     "bip39": "^2.5.0",
     "bluckur-database": "git+https://github.com/Bluckur/bluckur-database.git",
     "bluckur-models": "git+https://github.com/Bluckur/bluckur-models.git",
+    "core-js": "^2.5.7",
     "dotenv": "^5.0.1",
     "express": "^4.16.3",
     "hashmap": "^2.3.0",
