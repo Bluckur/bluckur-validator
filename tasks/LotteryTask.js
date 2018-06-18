@@ -1,8 +1,9 @@
-const schedule = require('node-schedule');
+const Cron = require('node-cron');
 const models = require('bluckur-models');
-const temporaryStorage = require('../logic/temporaryStorage');
+const temporaryStorage = require('../lib/util/temporaryStorage');
 const lottery = require('../util/lottery');
 const HashMap = require('hashmap');
+const Peer = require('../lib/p2p/peer');
 
 class LotteryTask {
     scheduleTask(previousHash, globalStateUsers){
@@ -24,11 +25,12 @@ class LotteryTask {
                 notValidatedTransactions.forEach(function(value, key) {
                     temporaryStorage.getInstance().addPendingTransaction(value, key);
                 });
-
-                //TODO: Add transactions and block to the global state.
             });
 
             temporaryStorage.getInstance().clearProposedBlocks();
+            this.peer = new Peer();
+            this.peer.broadcastMessage("victoriousblock", chosenBlock);
+            
         }, 10000);
     }
 }
