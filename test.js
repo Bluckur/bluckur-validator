@@ -25,7 +25,7 @@ const Validator = require('./lib/validator').getInstance();
 //     console.log(err);
 //   });
 // });
-
+//
 // Validator.initBlockchainAsync().then(() => {
 //   console.log('Blockchain initialized');
 // }).catch((err) => {
