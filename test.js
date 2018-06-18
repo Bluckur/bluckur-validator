@@ -15,8 +15,8 @@ const Security = require('./lib/security/security').getInstance();
 // });
 
 const t1 = Models.createTransactionInstance({
-  recipient: 'testietostie123',
-  amount: 5,
+  recipient: 'Klaas',
+  amount: 4,
   timestamp: +new Date(),
   type: 'coin',
   sender: process.env.PUBKEY_ADMIN,

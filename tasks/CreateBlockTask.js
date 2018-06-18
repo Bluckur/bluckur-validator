@@ -1,41 +1,41 @@
-var schedule = require('node-schedule');
-var models = require('bluckur-models');
-var security = require('../lib/security/security');
-var temporaryStorage = require('../logic/temporaryStorage');
+const schedule = require('node-schedule');
+const models = require('bluckur-models');
+const security = require('../lib/security/security');
+const temporaryStorage = require('../logic/temporaryStorage');
 
 class CreateBlockTask {
-    scheduleTask(validator, lastBlockHash, pendingTransactions, blockNumber) {
-        var createBlockSchedule = schedule.scheduleJob('0 * * * * *', function () {
-            var proposedBlock;
+  scheduleTask(validator, lastBlockHash, pendingTransactions, blockNumber) {
+    const createBlockSchedule = schedule.scheduleJob('0 * * * * *', () => {
+      let proposedBlock;
 
-            if(!lastBlockHash.trim() === ""){
-                proposedBlock = models.createBlockInstance({
-                    transactions : pendingTransactions,
-                    blockHeader : {
-                        validator : validator,
-                        parentHash : lastBlockHash,
-                        blockNumber : blockNumber,
-                        blockHash : security.hash(validator + lastBlockHash + blockNumber + Date.now(), pendingTransactions),
-                        timestamp : Date.now()
-                    }
-                })
-            } else {
-                proposedBlock = models.createBlockInstance({
-                    transactions : pendingTransactions,
-                    blockHeader : {
-                        validator : validator,
-                        blockNumber : blockNumber,
-                        blockHash : security.hash(validator + lastBlockHash + blockNumber + Date.now(), pendingTransactions),
-                        timestamp : Date.now()
-                    }
-                })
-            }
-
-            temporaryStorage.getInstance().addProposedBlock(proposedBlock);
-
-            //TODO: Send proposed block over the network
+      if (!lastBlockHash.trim() === '') {
+        proposedBlock = models.createBlockInstance({
+          transactions: pendingTransactions,
+          blockHeader: {
+            validator,
+            parentHash: lastBlockHash,
+            blockNumber,
+            blockHash: security.hash(validator + lastBlockHash + blockNumber + Date.now(), pendingTransactions),
+            timestamp: Date.now(),
+          },
         });
-    }
+      } else {
+        proposedBlock = models.createBlockInstance({
+          transactions: pendingTransactions,
+          blockHeader: {
+            validator,
+            blockNumber,
+            blockHash: security.hash(validator + lastBlockHash + blockNumber + Date.now(), pendingTransactions),
+            timestamp: Date.now(),
+          },
+        });
+      }
+
+      temporaryStorage.getInstance().addProposedBlock(proposedBlock);
+
+      // TODO: Send proposed block over the network
+    });
+  }
 }
 
 module.exports = CreateBlockTask;
