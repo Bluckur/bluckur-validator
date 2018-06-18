@@ -3,11 +3,13 @@ require('dotenv').config();
 const Validator = require('./lib/validator').getInstance();
 const Messager = require('./util/messager');
 const QrCodeGenerator = require('./services/qrCodeGenerator');
+const Peer = require('./lib/p2p/peer');
 const opn = require('opn');
 const express = require('express');
 const http = require('http');
 const Security = require('./lib/security/security').getInstance();
-
+const KeyStorage = require('./lib/util/keyStorage');
+const TransactionBuilder = require('./lib//util/transactionBuilder').getInstance();
 const qrCodeGenerator = new QrCodeGenerator();
 let io = require('socket.io');
 
@@ -49,6 +51,15 @@ io.on('connection', (socket) => {
         }
     });
 
+    socket.on('send-transaction', (transaction) => {
+        new KeyStorage().checkOrGenerateKeypair().then(() => {
+            const peer = new Peer();
+            TransactionBuilder.buildAsync(transaction.publickey, transaction.amount).then((transactionsigned) => {
+                peer.broadcastMessage('transaction', transactionsigned);
+            });
+        });
+    });
+
     socket.on('broadcast-chatmessage', (data) => {
         if (sender) {
             const { message } = JSON.parse(data.toString('utf8'));
@@ -66,12 +77,6 @@ io.on('connection', (socket) => {
                 privkey: result.privKey,
             });
         });
-    });
-
-    socket.on('set-pubkey', () => {
-        messager.notify('pubkey-set', JSON.stringify({
-            test: 'test',
-        }));
     });
 
     socket.on('set-wallet', (keypair) => {

@@ -119,15 +119,18 @@
                     <h2>Transaction</h2>
                 </header>
                 <p>Set the public key and amount for the transaction you wish to make</p>
-                <form method="post" action="#">
+                <form name="sendtransaction" id="sendtransaction">
                     <div class="row">
-                        <div class="6u 12u$(mobile)"><input type="text" name="transaction-public-key" placeholder="Public-Key" /></div>
-                        <div class="6u$ 12u$(mobile)"><input type="text" name="transaction-amoun" placeholder="amount" /></div>
+                        <input id="transaction-publickey" class="qr-code-input" type="text" name="transaction-publickey" placeholder="Public Key" />
+                        <input id="transaction-amount" class="qr-code-input" name="transaction-amount" placeholder="Amount Key" />
+                    </div>
+                    <div class="row">
                         <div class="12u$">
-                            <input type="submit" value="Generate transaction" />
+                            <input type="submit" value="Send transaction" />
                         </div>
                     </div>
                 </form>
+
             </div>
         </section>
         <section id="chain" class="four">
@@ -264,6 +267,11 @@
                 e.preventDefault();
                 generateKeypair();
             });
+            $('#sendtransaction').on('submit', function(e) {
+                e.preventDefault();
+                sendTransaction();
+            });
+
             $('#setwallet').on('submit', function(e) {
                 e.preventDefault();
                 setWallet();
@@ -343,6 +351,16 @@
             // console.log(document.querySelector('#JSONkeypair').value);
             var keypair = document.querySelector('#JSONkeypair').value;
             socket.emit('set-wallet', keypair);
+        }
+
+        function sendTransaction() {
+            // console.log(document.querySelector('#JSONkeypair').value);
+            var publickey = document.querySelector('#transaction-publickey').value;
+            var amount = document.querySelector('#transaction-amount').value;
+            socket.emit('send-transaction', {
+                publickey: publickey,
+                amount: amount
+            });
         }
 
         function generateQRCode() {
