@@ -1,40 +1,42 @@
-const schedule = require('node-schedule');
+const Cron = require('node-cron');
 const models = require('bluckur-models');
-const security = require('../lib/security/security');
-const temporaryStorage = require('../logic/temporaryStorage');
+const security = require('../lib/security/security').getInstance();
+const Peer = require('../lib/p2p/peer');
 
 class CreateBlockTask {
-  scheduleTask(validator, lastBlockHash, pendingTransactions, blockNumber) {
-    const createBlockSchedule = schedule.scheduleJob('0 * * * * *', () => {
+  createAndSend(validator, lastBlockHash, pendingTransactions, blockNumber) {
       let proposedBlock;
+      let timestamp = Date.now();
 
-      if (!lastBlockHash.trim() === '') {
-        proposedBlock = models.createBlockInstance({
-          transactions: pendingTransactions,
-          blockHeader: {
-            validator,
-            parentHash: lastBlockHash,
-            blockNumber,
-            blockHash: security.hash(validator + lastBlockHash + blockNumber + Date.now(), pendingTransactions),
-            timestamp: Date.now(),
-          },
-        });
-      } else {
-        proposedBlock = models.createBlockInstance({
-          transactions: pendingTransactions,
-          blockHeader: {
-            validator,
-            blockNumber,
-            blockHash: security.hash(validator + lastBlockHash + blockNumber + Date.now(), pendingTransactions),
-            timestamp: Date.now(),
-          },
-        });
-      }
-
-      temporaryStorage.getInstance().addProposedBlock(proposedBlock);
-
-      // TODO: Send proposed block over the network
-    });
+      security.hashAsync(validator + lastBlockHash + blockNumber + timestamp, pendingTransactions).then((result) =>{
+        if (!lastBlockHash.trim() === '') {
+          proposedBlock = models.createBlockInstance({
+            transactions: pendingTransactions,
+            blockHeader: {
+              validator: validator,
+              parentHash: lastBlockHash,
+              blockNumber: blockNumber,
+              blockHash: result,
+              timestamp: timestamp,
+            },
+          });
+        } 
+        else {
+          proposedBlock = models.createBlockInstance({
+            transactions: pendingTransactions,
+            blockHeader: {
+              validator: validator,
+              blockNumber, blockNumber,
+              blockHash: result,
+              timestamp: timestamp,
+            },
+          });
+        }
+  
+        // temporaryStorage.getInstance().addProposedBlock(proposedBlock);
+        this.peer = new Peer();
+        this.peer.broadcastMessage("proposedblock", proposedBlock);
+      });
   }
 }
 

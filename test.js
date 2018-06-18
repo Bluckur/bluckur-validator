@@ -31,7 +31,7 @@ const t2 = Models.createTransactionInstance({
   sender: "5f41601ad55d510cf6341e6b15ac41e07f88e0d0eb88270dd0ada2d25fb869fb",
   blockHash: 'iets',
 });
-
+/*
 TransactionSecurity.signAsync(t1, '08090009000000000000000000010008090703000000000300050000000200005f41601a755d510cf6341e6b15ac41e07f88e0d0eb88270dd0ada2d25fb869fb').then((transaction) => {
   Validator.handleNewTransactionAsync(transaction).then(() => {
     console.log('Success!');
@@ -46,6 +46,7 @@ TransactionSecurity.signAsync(t2, '080900090000000000000000000100080907030000000
   }).catch((err) => {
     console.log(err);
   });
-});
+});*/
+Validator.test();
 
 
