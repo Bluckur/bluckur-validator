@@ -23,17 +23,17 @@ class Lottery {
     let tickets = 0;
 
     receivedBlocks.forEach((block) => {
-      const validator = block.blockHeader.validator;
+      const { validator } = block.blockHeader;
       if (stakeHashMap.has(validator)) {
         tickets += stakeHashMap.get(validator);
         candidatesHashMap.set(validator, stakeHashMap.get(validator));
         candidateBlocksHashMap.set(validator, block);
       } else {
-        Database.putStateAsync(Models.createStateInstance({
+        Database.putStatesAsync(Models.createStateInstance([{
           publicKey: validator,
           coin: 0,
           stake: 0,
-        }));
+        }]));
       }
     });
 
