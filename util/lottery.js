@@ -29,7 +29,7 @@ class Lottery {
         candidatesHashMap.set(validator, stakeHashMap.get(validator));
         candidateBlocksHashMap.set(validator, block);
       } else {
-        Database.putStateAsync(Models.createStakeInstance({
+        Database.putStateAsync(Models.createStateInstance({
           publicKey: validator,
           coin: 0,
           stake: 0,
