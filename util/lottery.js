@@ -53,6 +53,6 @@ class Lottery {
       bottomMargin += stake;
       candidatePointer += 1;
     }
+  }
 }
-
 module.exports = Lottery;
