@@ -6,9 +6,9 @@ const HashMap = require('hashmap');
 const Peer = require('../lib/p2p/peer');
 
 class LotteryTask {
-    scheduleTask(previousHash, globalStateUsers){
+    scheduleTask(previousHash, globalStateUsers) {
         var createBlockSchedule = setInterval(() => {
-            var chosenBlock = lottery.pickWinner(temporaryStorage.getInstance().getProposedBlocks(), previousHash, globalStateUsers);
+            var chosenBlock = new lottery().pickWinner(temporaryStorage.getInstance().getProposedBlocks(), previousHash, globalStateUsers);
 
             temporaryStorage.getInstance().getProposedBlocks().map((block) => {
                 var notValidatedTransactions = new HashMap();
@@ -16,7 +16,7 @@ class LotteryTask {
                     notValidatedTransactions.set(transaction.id, transaction);
                 });
 
-                if(block.transactions.length > chosenBlock.transactions.length){
+                if (block.transactions.length > chosenBlock.transactions.length) {
                     chosenBlock.transactions.map((transactionFromChosenBlock) => {
                         notValidatedTransactions.remove(transactionFromChosenBlock.id);
                     });
@@ -30,7 +30,7 @@ class LotteryTask {
             temporaryStorage.getInstance().clearProposedBlocks();
             this.peer = new Peer();
             this.peer.broadcastMessage("victoriousblock", chosenBlock);
-            
+
         }, 10000);
     }
 }
