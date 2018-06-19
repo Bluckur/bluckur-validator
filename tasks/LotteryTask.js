@@ -29,7 +29,7 @@ class LotteryTask {
 
                 temporaryStorage.getInstance().clearProposedBlocks();
                 this.peer = new Peer();
-                this.peer.broadcastMessage('victoriousblock', this.chosenBlock);
+                this.peer.broadcastMessage('victoriousblock', chosenBlock);
             }
         }, 10000);
     }
