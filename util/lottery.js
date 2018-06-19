@@ -25,8 +25,8 @@ class Lottery {
     receivedBlocks.forEach((block) => {
       const { validator } = block.blockHeader;
       if (stakeHashMap[validator]) {
-        tickets += stakeHashMap.get(validator);
-        candidatesHashMap.set(validator, stakeHashMap.get(validator));
+        tickets += stakeHashMap[validator];
+        candidatesHashMap.set(validator, stakeHashMap[validator]);
         candidateBlocksHashMap.set(validator, block);
       } else {
         Database.putStatesAsync(Models.createStateInstance([{
