@@ -16,7 +16,7 @@ class LotteryTask {
                     notValidatedTransactions.set(transaction.id, transaction);
                 });
 
-                if (block.transactions.length > chosenBlock.transactions.length) {
+                if (block.transactions && chosenBlock.transactions && block.transactions.length > chosenBlock.transactions.length) {
                     chosenBlock.transactions.map((transactionFromChosenBlock) => {
                         notValidatedTransactions.remove(transactionFromChosenBlock.id);
                     });
