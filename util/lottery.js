@@ -40,7 +40,7 @@ class Lottery {
       }
     });
 
-    const randomNumber = seedrandom(previousBlockId)();
+    const randomNumber = seedrandom(previousBlockId)() * tickets;
 
     let bottomMargin = 0;
     let upperMargin = 0;
