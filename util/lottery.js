@@ -24,14 +24,14 @@ class Lottery {
 
     receivedBlocks.forEach((block) => {
       const { validator } = block.blockHeader;
-      console.log(`Validator: ${validator}`);
+      console.log(`Validator before: ${validator}`);
       if (stakeHashMap[validator]) {
         console.log(`Validator value in if statement: ${stakeHashMap[validator]}`);
         tickets += stakeHashMap[validator];
         candidatesHashMap.set(validator, stakeHashMap[validator]);
         candidateBlocksHashMap.set(validator, block);
       } else {
-        console.log(`Validator: ${validator}`);
+        console.log(`Validator in else: ${validator}`);
         Database.putStatesAsync([Models.createStateInstance({
           publicKey: validator,
           coin: 0,
