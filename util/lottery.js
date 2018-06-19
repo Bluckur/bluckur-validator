@@ -33,11 +33,7 @@ class Lottery {
                 publicKey: validator,
                 coin: 0,
                 stake: 0,
-              }).then(() => {
-
-              }).catch((err) => {
-                console.log(err);
-              });
+              }));
             }
         });
 
