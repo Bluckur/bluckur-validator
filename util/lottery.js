@@ -11,10 +11,10 @@ class Lottery {
      * @param {GlobalStateUser} globalStateUsers [List of all the global state users from the Database]
      */
   pickWinner(receivedBlocks, previousBlockId, globalStateUsers) {
-    const stakeHashMap = new HashMap();
+    const stakeHashMap = {};
 
-    globalStateUsers.map((globalStateUser) => {
-      stakeHashMap.set(globalStateUser.publicKey, globalStateUser.stake);
+    globalStateUsers.forEach(({ publicKey, stake }) => {
+      stakeHashMap[publicKey] = stake;
     });
 
     const candidatesHashMap = new HashMap();
@@ -24,16 +24,16 @@ class Lottery {
 
     receivedBlocks.forEach((block) => {
       const { validator } = block.blockHeader;
-      if (stakeHashMap.has(validator)) {
+      if (stakeHashMap[validator]) {
         tickets += stakeHashMap.get(validator);
         candidatesHashMap.set(validator, stakeHashMap.get(validator));
         candidateBlocksHashMap.set(validator, block);
       } else {
-        Database.putStatesAsync([Models.createStateInstance({
+        Database.putStatesAsync(Models.createStateInstance([{
           publicKey: validator,
           coin: 0,
           stake: 0,
-        })]);
+        }]));
       }
     });
 
