@@ -24,9 +24,11 @@ class Lottery {
 
     receivedBlocks.forEach((block) => {
       const { validator } = block.blockHeader;
-      console.log(`Validator before: ${validator}`);
+      console.log('keys:');
+      console.log(stakeHashMap.keys());
+      console.log('values:');
+      console.log(stakeHashMap.values());
       if (stakeHashMap[validator]) {
-        console.log(`Validator value in if statement: ${stakeHashMap[validator]}`);
         tickets += stakeHashMap[validator];
         candidatesHashMap.set(validator, stakeHashMap[validator]);
         candidateBlocksHashMap.set(validator, block);
