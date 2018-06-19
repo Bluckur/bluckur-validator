@@ -234,6 +234,8 @@ class Security {
      * @return {*} hash
      */
   static hash(data) {
+    console.log('Hash some data!');
+    console.log(data);
     return new Promise((resolve, reject) => {
       if (!data) {
         reject(new Error('Can\'t hash invalid data'));
