@@ -16,8 +16,8 @@ class LotteryTask {
                     notValidatedTransactions.set(transaction.id, transaction);
                 });
 
-                if (block.transactions.length > chosenBlock.transactions.length) {
-                    chosenBlock.transactions.map((transactionFromChosenBlock) => {
+                if (block.transactions && this.chosenBlock.transactions && block.transactions.length > this.chosenBlock.transactions.length) {
+                    this.chosenBlock.transactions.map((transactionFromChosenBlock) => {
                         notValidatedTransactions.remove(transactionFromChosenBlock.id);
                     });
                 }
@@ -29,7 +29,7 @@ class LotteryTask {
 
             temporaryStorage.getInstance().clearProposedBlocks();
             this.peer = new Peer();
-            this.peer.broadcastMessage("victoriousblock", chosenBlock);
+            this.peer.broadcastMessage("victoriousblock", this.chosenBlock);
 
         }, 10000);
     }
