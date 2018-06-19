@@ -94,3 +94,7 @@ database/level/globalState/000007\.ldb
 database/level/globalState/MANIFEST-000006
 
 database/level/blockchain/MANIFEST-000009
+
+database/level/globalState/000010\.ldb
+
+database/level/globalState/MANIFEST-000009
