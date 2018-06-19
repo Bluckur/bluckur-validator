@@ -7,30 +7,30 @@ const Peer = require('../lib/p2p/peer');
 
 class LotteryTask {
     scheduleTask(previousHash, globalStateUsers) {
-        var createBlockSchedule = setInterval(() => {
-            var chosenBlock = new lottery().pickWinner(temporaryStorage.getInstance().getProposedBlocks(), previousHash, globalStateUsers);
-
-            temporaryStorage.getInstance().getProposedBlocks().map((block) => {
-                var notValidatedTransactions = new HashMap();
-                block.transactions.map((transaction) => {
-                    notValidatedTransactions.set(transaction.id, transaction);
-                });
-
-                if (block.transactions && chosenBlock.transactions && block.transactions.length > chosenBlock.transactions.length) {
-                    this.chosenBlock.transactions.map((transactionFromChosenBlock) => {
-                        notValidatedTransactions.remove(transactionFromChosenBlock.id);
+        const createBlockSchedule = setInterval(() => {
+            const chosenBlock = new lottery().pickWinner(temporaryStorage.getInstance().getProposedBlocks(), previousHash, globalStateUsers);
+            if (chosenBlock && chosenBlock !== undefined) {
+                temporaryStorage.getInstance().getProposedBlocks().map((block) => {
+                    const notValidatedTransactions = new HashMap();
+                    block.transactions.map((transaction) => {
+                        notValidatedTransactions.set(transaction.id, transaction);
                     });
-                }
 
-                notValidatedTransactions.forEach(function(value, key) {
-                    temporaryStorage.getInstance().addPendingTransaction(value, key);
+                    if (block.transactions && chosenBlock.transactions && block.transactions.length > chosenBlock.transactions.length) {
+                        this.chosenBlock.transactions.map((transactionFromChosenBlock) => {
+                            notValidatedTransactions.remove(transactionFromChosenBlock.id);
+                        });
+                    }
+
+                    notValidatedTransactions.forEach((value, key) => {
+                        temporaryStorage.getInstance().addPendingTransaction(value, key);
+                    });
                 });
-            });
 
-            temporaryStorage.getInstance().clearProposedBlocks();
-            this.peer = new Peer();
-            this.peer.broadcastMessage("victoriousblock", this.chosenBlock);
-
+                temporaryStorage.getInstance().clearProposedBlocks();
+                this.peer = new Peer();
+                this.peer.broadcastMessage('victoriousblock', this.chosenBlock);
+            }
         }, 10000);
     }
 }
