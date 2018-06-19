@@ -53,9 +53,8 @@ class Lottery {
             bottomMargin += stake;
             candidatePointer += 1;
         }
-        return new Block();
+        return Models.createBlockInstance({});
     }
-    return Models.createBlockInstance({});
   }
 }
 
