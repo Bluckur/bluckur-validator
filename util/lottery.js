@@ -55,7 +55,6 @@ class Lottery {
         }
         return Models.createBlockInstance({});
     }
-  }
 }
 
 module.exports = Lottery;
