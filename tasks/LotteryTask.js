@@ -7,7 +7,7 @@ const Peer = require('../lib/p2p/peer');
 
 class LotteryTask {
     scheduleTask(previousHash, globalStateUsers) {
-        const createBlockSchedule = setInterval(() => {
+        const createBlockSchedule = setTimeout(() => {
             const chosenBlock = new lottery().pickWinner(temporaryStorage.getInstance().getProposedBlocks(), previousHash, globalStateUsers);
             if (chosenBlock && chosenBlock !== undefined) {
                 temporaryStorage.getInstance().getProposedBlocks().map((block) => {
