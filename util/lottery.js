@@ -1,4 +1,4 @@
-const models = require('bluckur-models');
+const Models = require('bluckur-models');
 const HashMap = require('hashmap');
 const seedrandom = require('seedrandom');
 
@@ -45,7 +45,7 @@ class Lottery {
       bottomMargin += stake;
       candidatePointer += 1;
     }
-    return new Block();
+    return Models.createBlockInstance({});
   }
 }
 
