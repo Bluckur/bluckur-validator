@@ -53,8 +53,6 @@ class Lottery {
       bottomMargin += stake;
       candidatePointer += 1;
     }
-    return Models.createBlockInstance({});
-  }
 }
 
 module.exports = Lottery;
