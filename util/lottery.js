@@ -1,6 +1,7 @@
 const Models = require('bluckur-models');
 const HashMap = require('hashmap');
 const seedrandom = require('seedrandom');
+const Database = require('bluckur-database').getInstance(process.env.IS_BACKUP === 'true');
 
 class Lottery {
     /**
@@ -27,6 +28,16 @@ class Lottery {
                 tickets += stakeHashMap.get(validator);
                 candidatesHashMap.set(validator, stakeHashMap.get(validator));
                 candidateBlocksHashMap.set(validator, block);
+            } else {
+              Database.putStateAsync(Models.createStakeInstance({
+                publicKey: validator,
+                coin: 0,
+                stake: 0,
+              }).then(() => {
+
+              }).catch((err) => {
+                console.log(err);
+              });
             }
         });
 
